@@ -94,7 +94,7 @@ npx tsc -b           # 仅类型检查（CI 的 ci job 也会执行）
 - `.section-bg`：`absolute` 铺满、`z-index:-1`、`pointer-events:none`，多由浅灰径向渐变 + tech-grid 组成背景
 - `.section-content`：`max-width:1440px` 居中，响应式内边距
 - 区块标题统一用 `.section-label`（含 `☐` 前缀伪元素 + 右上角钻石 ◆ 高亮），按区块追加修饰类 `section-label--hero/about/skills/works/contact`
-- 新增 NavBar（_navbar.scss）：fixed 顶部、高度 72px、`z-nav: 100`；App.tsx 中 `.app` 有 `padding-top: 72px` 避让；scrollTo 锚点跳转需减去 72px
+- 新增 NavBar（_navbar.scss）：**顶部居中悬浮胶囊**，`top:20px / height:56px`（总底部约 76px）、`z-nav: 100`、左右不贴边、毛玻璃 + 像素切角 + 虚线内框、四边发光；**不再在 .app 上预留 padding-top**；scrollTo 锚点跳转 `offsetTop - 100`（20+56+缓冲≈）；scroll-spy 触发线 `scrollY + 100`
 
 ---
 
@@ -191,7 +191,7 @@ return <section ref={container} className="section hero" id="hero">…</section>
 任何区块的布局高度变化后需要刷新：App 已在挂载后调用 `ScrollTrigger.refresh()`；若动态改变内容高度，记得补调。
 
 ### 5.5 NavBar scroll-spy（不使用 ScrollTrigger，用 window.scroll）
-`NavBar.tsx` 组件内 `useEffect` 绑 `window.scroll`，计算 `window.scrollY + 120` 落到 5 个 section 的 `offsetTop/offsetHeight` 区间内，映射 `activeId` 高亮对应 Tab。点击 tab 时 `scrollTo({ top: section.offsetTop - 72 })` —— 72px 是 NavBar 高度，避免遮盖标题。**新增 section 时要同步在 navItems 数组中加条目 + 给 NavBar 的 section id 映射。**
+`NavBar.tsx` 组件内 `useEffect` 绑 `window.scroll`，计算 `window.scrollY + 100` 落到 5 个 section 的 `offsetTop/offsetHeight` 区间内，映射 `activeId` 高亮对应 Tab。点击 tab 时 `scrollTo({ top: section.offsetTop - 100 })` —— 100 是 NavBar 悬浮顶部（20px + 56px + 24px 缓冲），避免标题被悬浮胶囊遮挡。**新增 section 时要同步在 navItems 数组中加条目 + 给 NavBar 的 section id 映射。**
 
 ---
 
@@ -214,7 +214,7 @@ return <section ref={container} className="section hero" id="hero">…</section>
 | 内容 | 位置 | 说明 |
 | --- | --- | --- |
 | 页面标题/描述/图标 | `index.html` + `public/favicon.svg` | `<title>`、SEO/OG meta、canonical（当前指向 `https://logic-beep.github.io/`）—— 目前标题仍为旧风格 `CYBER.PORTFOLIO // v2.077`，可按需改为 `GEEK.DEV // v2.1` 等 |
-| 顶部 NavBar Tab + 复选框 + 版本号 | `NavBar.tsx` | `navItems` 数组（id/label/code: `0x00~0x04`）；右侧 `checkboxes` 装饰；logo `GEEK.DEV` 与 `v2.1` 像素版本号。scroll-spy 与 click scrollTo 72px 偏移在此组件 |
+| 顶部 NavBar Tab + 复选框 + 版本号 | `NavBar.tsx` | `navItems` 数组（id/label/code: `0x00~0x04`）；右侧 `checkboxes` 装饰；logo `GEEK.DEV` 与 `v2.1` 像素版本号。scroll-spy 与 click scrollTo **100** 偏移在此组件 |
 | Hero 文案 / TASKLIST | `Hero.tsx` | 问候语 `boot.system()`、两行标题、副标题、meta、**`tasks` 数组（真实勾选交互，复选框 `.animate-check` 350ms）** |
 | About 文案/统计 | `About.tsx` | USER_DOSSIER 中文简介段落 + `.about__visual-connections`（两条虚线箭头+钻石节点） + `.about__text-stats-item` 的 `data-num/data-suffix` + 每项行首 `geek-checkbox is-checked` 装饰 |
 | 技能卡片 | `Skills.tsx` 顶部 `skills` 数组 | title/desc/level/levelLabel/icon(SVG JSX)；每张卡片左上/右下 L 形角 `.skills__card-corner-tl/br`；百分比右侧 `.geek-checkbox--mini is-checked`；新增条目自动进网格 |
@@ -241,12 +241,12 @@ return <section ref={container} className="section hero" id="hero">…</section>
 2. 创建 `src/styles/_<x>.scss`，开头 `@use 'variables' as *; @use 'mixins' as *;`
 3. 在 `styles/main.scss` 末尾 `@use '<x>';`（顺序影响层叠，注意与现有区块的相对覆盖关系）
 4. 在 `App.tsx` 中 `import` 并在 `<main>` 内按页面顺序放置（id 锚点同时生效）
-5. **同步更新 `NavBar.tsx` 的 `navItems` 数组**：追加新条目（label + code: `0x05/0x06`…），并在 scroll-spy 的 section 映射中包含新 id，否则新 Tab 不会被 scroll-spy 激活，点击时 scrollTo -72px 偏移也不会生效
+5. **同步更新 `NavBar.tsx` 的 `navItems` 数组**：追加新条目（label + code: `0x05/0x06`…），并在 scroll-spy 的 section 映射中包含新 id，否则新 Tab 不会被 scroll-spy 激活，点击时 scrollTo **-100** 偏移也不会生效
 6. 若需要区分配色/主题，优先追加变量或对区块加修饰类，避免污染全局类
 7. `npm run build` 验证类型与产物；push 到 main 触发 CI + 自动部署
 
 新增 **Decorations**（视觉装饰元素）同理：改 `Decorations.tsx` + `_decorations.scss`；容器是 `aria-hidden="true"` 的 fixed 层，不承载语义内容。
-新增 **NavBar Tab** 或复选框装饰：改 `NavBar.tsx` + `_navbar.scss`；NavBar 高度变化后要同步修改 App.tsx 中 `.app` 的 `padding-top` 与所有 scrollTo 偏移（-72px → -新高度）。
+新增 **NavBar Tab** 或复选框装饰：改 `NavBar.tsx` + `_navbar.scss`；NavBar 悬浮尺寸/位置变化后要同步修改 scrollTo 偏移（`-100` → -新的 `top + height + 缓冲`）与 scroll-spy 触发线（`+100`），以及 `_decorations.scss` HUD 的 `--tl/--tr top: 6.25rem` 位置避免被遮挡。NavBar 改为悬浮胶囊后 **.app 不再有 padding-top**，不要回加。
 
 ---
 
@@ -270,7 +270,7 @@ return <section ref={container} className="section hero" id="hero">…</section>
 4. **占位链接去风险** → Works `url` / Contact `socials` 的 `href` 缺省渲染禁用态，不再有跳回顶部的 `#` 链接；GitHub 已按仓库远端填写
 5. **README 缺省** → 已新建 `README.md`
 6. **字体本地自托管** → 已从 Google Fonts CDN 迁移至 `@fontsource/*` 本地构建（Orbitron/Rajdhani/SpaceMono/PressStart2P/VT323 按 latin 子集 ES import 进 `main.tsx`，Vite 自动 hash 打包到 `dist/assets`）
-7. **顶部 NavBar Tab 导航栏** → 已新建 `NavBar.tsx` + `_navbar.scss`，实现：0x00~0x04 编码 Tab、scroll-spy 激活、GSAP 入场、右侧复选框组+底部扫描线、scrollTo -72px 偏移；App.tsx 中 `.app padding-top:72px` 避让
+7. **顶部 NavBar Tab 导航栏** → 已新建 `NavBar.tsx` + `_navbar.scss`，实现：0x00~0x04 编码 Tab、scroll-spy 激活（window.scrollY+100）、GSAP 入场、右侧复选框组+虚线电路装饰、四边发光悬浮胶囊（top:20px height:56px 居中悬浮，不占 .app padding）、scrollTo offsetTop-100 避免标题被遮挡
 8. **完整风格重构：赛博霓虹 → 极客蓝图** → 浅灰背景 `#F2F3F5` / 亮宝蓝 `#0055FF` / 深灰实线+虚线四级；复选框组件 `.geek-checkbox`（含 mini 12px 版与 `checkboxPop` 点击弹跳）；细线电路板 `CircuitSVG`；自定义 SVG 鼠标光标（默认/悬停两态）；Hero/About/Skills/Works/Contact + HUD 四角文案全部改为「TASKLIST/QUEST/USER_DOSSIER/TOOLBOX/BLUEPRINT/PAIR_PROGRAMMING_MODE」解谜游戏口吻
 9. **微交互全覆盖** → Skills 卡片 hover translateY+scale+蓝色发光 / Works 斜向光扫 `::after sweep`+内虚线框显示 / Tags 悬停蓝发光 / Email 按钮反色大发光 / NavBar Tab 激活 / 联系方式卡片 hover 虚线内框显示
 
@@ -293,7 +293,7 @@ return <section ref={container} className="section hero" id="hero">…</section>
 - ✅ 新增任何 JS 动效 / SVG 循环 / 装饰层呼吸动画必须处理 `REDUCED_MOTION` 降级（见 5.5）；给 Hero 新增「初始隐藏」元素时同步补 `_hero.scss` 的 reduce 覆盖，否则降级模式下内容不可见
 - ✅ **复选框组件约定**：真实交互用 `useState` 控 `.is-checked`，点击动画用 DOM 上临时加 `animate-check` 350ms；装饰只读复选框（About stats/Skills mini）直接同时加 `.geek-checkbox + .is-checked` 静态类，不要走 state
 - ✅ **自定义光标约定**：新增可点击元素若不是 `a/button`，需同时写到 `_base.scss` 光标选择器列表里，否则 hover 仍显示默认指针
-- ✅ **NavBar 强约定**：新增/删除 section 必须同步修改 `NavBar.tsx` 的 `navItems` 数组 + scroll-spy 区间映射；点击跳转锚点永远减去 NavBar 实际高度（当前 72px，NavBar 改高度后要同步改 App padding-top 与所有 offset 偏移）
+- ✅ **NavBar 强约定**：新增/删除 section 必须同步修改 `NavBar.tsx` 的 `navItems` 数组 + scroll-spy 区间映射（`scrollY + 100`）；点击跳转锚点永远减去 NavBar 悬浮总高度 + 缓冲（当前 100 = 20 top + 56 height + 24 buffer，NavBar 改尺寸后要同步改 `+100 / -100` 与 `_decorations.scss` HUD top 值。**NavBar 悬浮胶囊不占 .app padding，禁止回加 padding-top: 72px**）
 - ✅ Works/Contact 占位链接一律用可选 `url`/`href` 字段 + `--disabled` 禁用态渲染，**禁止写 `href="#"`**
 - ✅ 保持 StrictMode 兼容：effect 内资源（rAF/interval/监听器/window.scroll）必须有清理；GSAP 动画统一走 `useGSAP`（自动 revert）；NavBar 的 `window scroll` 事件 useEffect 返回 cleanup `removeEventListener`
 - ❌ 不要改/提交 `dist/`（git-ignored、CI 生成）、`package-lock` 除非确需加依赖

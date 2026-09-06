@@ -1,7 +1,6 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import gsap from 'gsap'
 import { useGSAP } from '@gsap/react'
-import { useRef } from 'react'
 
 interface NavItem {
   id: string
@@ -17,39 +16,55 @@ const navItems: NavItem[] = [
   { id: 'contact', label: 'Contact', code: '0x04' },
 ]
 
+const NAVBAR_HEIGHT = 72
+const SCROLL_LOCK_MS = 650
+
 const NavBar = () => {
   const [activeId, setActiveId] = useState('hero')
-  const [checkboxes, setCheckboxes] = useState<Record<string, boolean>>({})
   const container = useRef<HTMLElement>(null)
+  const scrollLockUntil = useRef(0)
 
   useGSAP(() => {
-    gsap.from('.navbar__tab', {
-      y: -30,
-      opacity: 0,
-      duration: 0.6,
-      stagger: 0.08,
-      ease: 'back.out(1.5)',
-      delay: 0.2,
-    })
+    gsap.fromTo('.navbar__tab',
+      { y: -30, opacity: 0 },
+      {
+        y: 0,
+        opacity: 1,
+        duration: 0.6,
+        stagger: 0.08,
+        ease: 'back.out(1.5)',
+        delay: 0.2,
+        clearProps: 'transform,opacity',
+      }
+    )
 
-    gsap.from('.navbar__logo', {
-      x: -40,
-      opacity: 0,
-      duration: 0.8,
-      ease: 'power3.out',
-    })
+    gsap.fromTo('.navbar__logo',
+      { x: -40, opacity: 0 },
+      {
+        x: 0,
+        opacity: 1,
+        duration: 0.8,
+        ease: 'power3.out',
+        clearProps: 'transform,opacity',
+      }
+    )
 
-    gsap.from('.navbar__checkboxes', {
-      x: 40,
-      opacity: 0,
-      duration: 0.8,
-      ease: 'power3.out',
-      delay: 0.3,
-    })
+    gsap.fromTo('.navbar__checkboxes',
+      { x: 40, opacity: 0 },
+      {
+        x: 0,
+        opacity: 1,
+        duration: 0.8,
+        ease: 'power3.out',
+        delay: 0.3,
+        clearProps: 'transform,opacity',
+      }
+    )
   }, { scope: container })
 
   useEffect(() => {
     const handleScroll = () => {
+      if (Date.now() < scrollLockUntil.current) return
       const scrollPos = window.scrollY + 120
       for (const item of navItems) {
         const el = document.getElementById(item.id)
@@ -57,7 +72,7 @@ const NavBar = () => {
           const top = el.offsetTop
           const bottom = top + el.offsetHeight
           if (scrollPos >= top && scrollPos < bottom) {
-            setActiveId(item.id)
+            setActiveId(prev => (prev === item.id ? prev : item.id))
             break
           }
         }
@@ -68,17 +83,22 @@ const NavBar = () => {
     return () => window.removeEventListener('scroll', handleScroll)
   }, [])
 
-  const handleNavClick = (id: string) => {
-    setCheckboxes(prev => ({ ...prev, [id]: !prev[id] }))
-    const checkbox = document.querySelector(`.navbar-cb-${id}`)
-    if (checkbox && !checkboxes[id]) {
+  useEffect(() => {
+    const checkbox = document.querySelector(`.navbar-cb-${activeId}`)
+    if (checkbox) {
       checkbox.classList.add('animate-check')
-      setTimeout(() => checkbox.classList.remove('animate-check'), 350)
+      const t = setTimeout(() => checkbox.classList.remove('animate-check'), 350)
+      return () => clearTimeout(t)
     }
+  }, [activeId])
+
+  const handleNavClick = (id: string) => {
+    scrollLockUntil.current = Date.now() + SCROLL_LOCK_MS
+    setActiveId(id)
     const el = document.getElementById(id)
     if (el) {
       window.scrollTo({
-        top: el.offsetTop - 72,
+        top: el.offsetTop - NAVBAR_HEIGHT,
         behavior: 'smooth',
       })
     }
@@ -111,10 +131,10 @@ const NavBar = () => {
         </div>
 
         <div className="navbar__checkboxes" aria-hidden="true">
-          {navItems.slice(0, 3).map((item) => (
+          {navItems.map((item) => (
             <div
               key={item.id}
-              className={`geek-checkbox navbar-cb navbar-cb-${item.id} ${checkboxes[item.id] ? 'is-checked' : ''}`}
+              className={`geek-checkbox navbar-cb navbar-cb-${item.id} ${activeId === item.id ? 'is-checked' : ''}`}
               title={item.label}
               onClick={() => handleNavClick(item.id)}
             />
