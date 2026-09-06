@@ -8,15 +8,14 @@
 
   &-bg {
     background:
-      radial-gradient(ellipse 80% 50% at 50% 0%, rgba($neon-violet, 0.35) 0%, transparent 70%),
-      radial-gradient(ellipse 60% 40% at 20% 80%, rgba($neon-cyan, 0.25) 0%, transparent 70%),
-      radial-gradient(ellipse 60% 40% at 80% 80%, rgba($neon-magenta, 0.25) 0%, transparent 70%),
-      $color-void;
+      radial-gradient(ellipse 70% 50% at 20% 0%, rgba($blue-primary, 0.12) 0%, transparent 70%),
+      radial-gradient(ellipse 60% 50% at 80% 100%, rgba($blue-primary, 0.08) 0%, transparent 70%),
+      linear-gradient(180deg, $bg-page 0%, $bg-surface 50%, $bg-panel 100%);
 
     &::after {
       content: '';
       @include absolute-fill;
-      @include cyber-grid(rgba($neon-cyan, 0.05), 40px);
+      @include tech-grid(rgba($line-1, 0.05), 35px);
       background-position: center;
       mask-image: linear-gradient(to bottom, black 0%, transparent 100%);
       -webkit-mask-image: linear-gradient(to bottom, black 0%, transparent 100%);
@@ -34,21 +33,32 @@
   &__greeting {
     font-family: $font-mono;
     font-size: clamp(0.85rem, 1.2vw, 1rem);
-    color: $neon-cyan;
+    color: $text-tertiary;
     margin-bottom: $spacing-md;
-    letter-spacing: 0.2em;
+    letter-spacing: 0.05em;
+    line-height: 1.8;
     opacity: 0;
     transform: translateY(30px);
-    @include neon-glow($neon-cyan, $neon-blur-sm);
+
+    &-prefix {
+      color: $blue-primary;
+      font-weight: 700;
+      @include glow-text($blue-primary, $glow-sm);
+    }
+
+    &-text {
+      color: $text-secondary;
+    }
 
     &::before {
-      content: '> ';
-      color: $neon-magenta;
+      content: '$ ';
+      color: $line-3;
+      font-weight: 700;
     }
   }
 
   &__title {
-    font-family: $font-display;
+    font-family: $font-heading;
     font-size: clamp(3rem, 11vw, 9rem);
     font-weight: 900;
     line-height: 0.95;
@@ -64,37 +74,64 @@
     &-inner {
       display: block;
       transform: translateY(100%);
-      color: $color-text;
+      color: $text-primary;
       position: relative;
-
-      &.glitch-text {
-        display: block;
-      }
+      @include glow-text($blue-primary, $glow-sm);
     }
 
     &--accent {
-      @include gradient-neon($gradient-neon-cm);
+      @include gradient-blue-text;
       font-style: normal;
       font-weight: 900;
-      text-shadow: 0 0 40px rgba($neon-cyan, 0.35);
+      display: inline-block;
+      position: relative;
+
+      &::before {
+        content: '';
+        position: absolute;
+        inset: -4px -8px;
+        border: $line-thin dashed rgba($blue-primary, 0.5);
+        @include pixel-corner($pixel);
+        opacity: 0.7;
+        pointer-events: none;
+      }
     }
   }
 
   &__subtitle {
     font-family: $font-mono;
     font-size: clamp(0.95rem, 1.4vw, 1.2rem);
-    color: $color-text-dim;
+    color: $text-secondary;
     max-width: 640px;
     margin-bottom: $spacing-lg;
-    line-height: 1.8;
+    line-height: 1.9;
     opacity: 0;
     transform: translateY(30px);
-    padding-left: $spacing-md;
-    border-left: 2px solid $neon-magenta;
+    padding: $spacing-sm $spacing-md;
+    background: $bg-surface;
+    border-left: $line-thick solid $blue-primary;
+    border-top: $line-thin solid $line-muted;
+    border-right: $line-thin solid $line-muted;
+    border-bottom: $line-thin solid $line-muted;
+    @include pixel-corner($pixel);
+    position: relative;
+
+    &::after {
+      content: '';
+      position: absolute;
+      top: 8px;
+      right: 8px;
+      width: 6px;
+      height: 6px;
+      background: $blue-primary;
+      transform: rotate(45deg);
+      @include glow-box($blue-primary, $glow-sm);
+    }
 
     .hl {
-      color: $neon-cyan;
-      @include neon-glow($neon-cyan, $neon-blur-sm);
+      color: $blue-primary-dark;
+      font-weight: 700;
+      @include glow-text($blue-primary, $glow-sm);
     }
   }
 
@@ -110,22 +147,49 @@
       flex-direction: column;
       gap: 0.35rem;
       padding: $spacing-xs 0;
-      border-top: 1px solid rgba($neon-cyan, 0.25);
+      position: relative;
 
-      span:first-child {
-        font-family: $font-mono;
-        font-size: 0.65rem;
-        text-transform: uppercase;
-        letter-spacing: 0.25em;
-        color: $color-text-faint;
+      &::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 32px;
+        height: $line-thick;
+        background: $line-1;
       }
+    }
 
-      span:last-child {
-        font-family: $font-display;
-        font-size: 1.1rem;
-        color: $color-text;
-        letter-spacing: 0.03em;
-        @include neon-glow($neon-magenta, $neon-blur-sm);
+    &-key {
+      font-family: $font-mono;
+      font-size: 0.65rem;
+      text-transform: uppercase;
+      letter-spacing: 0.25em;
+      color: $text-muted;
+      padding-left: 40px;
+      position: relative;
+
+      &::before {
+        content: '▶';
+        position: absolute;
+        left: 0;
+        color: $blue-primary;
+        font-size: 0.5rem;
+        line-height: 1.2;
+      }
+    }
+
+    &-value {
+      font-family: $font-heading;
+      font-size: 1.05rem;
+      color: $text-primary;
+      letter-spacing: 0.03em;
+      font-weight: 700;
+      padding-left: 40px;
+
+      &--ok {
+        color: $success;
+        @include glow-text($success, $glow-sm);
       }
     }
   }
@@ -139,9 +203,9 @@
     flex-direction: column;
     align-items: center;
     gap: 0.85rem;
-    color: $neon-cyan;
+    color: $line-3;
     font-family: $font-mono;
-    font-size: 0.6rem;
+    font-size: 0.65rem;
     letter-spacing: 0.3em;
     text-transform: uppercase;
     opacity: 0;
@@ -150,7 +214,7 @@
       position: relative;
       width: 2px;
       height: 4rem;
-      background: rgba($neon-cyan, 0.15);
+      background: $line-muted;
       overflow: hidden;
 
       &::after {
@@ -160,64 +224,126 @@
         left: 0;
         width: 100%;
         height: 50%;
-        background: linear-gradient(to bottom, $neon-cyan, transparent);
+        background: linear-gradient(to bottom, $blue-primary, transparent);
         animation: heroScrollGlow 2s ease-in-out infinite;
-        @include neon-glow($neon-cyan, $neon-blur-sm);
+        @include glow-box($blue-primary, $glow-sm);
       }
     }
 
     &-arrow {
       width: 0;
       height: 0;
-      border-left: 5px solid transparent;
-      border-right: 5px solid transparent;
-      border-top: 7px solid $neon-cyan;
+      border-left: 6px solid transparent;
+      border-right: 6px solid transparent;
+      border-top: 9px solid $blue-primary;
       animation: heroScrollArrow 2s ease-in-out infinite;
+      filter: drop-shadow(0 0 4px rgba($blue-primary, 0.6));
     }
   }
 
-  &__terminal {
+  &__tasklist {
     position: absolute;
-    right: 2rem;
-    top: 25%;
-    width: 280px;
-    @include cyber-panel($neon-cyan);
-    @include neon-box-glow($neon-cyan, $neon-blur-md);
-    padding: $spacing-sm;
+    right: 1rem;
+    top: 15%;
+    width: 300px;
+    @include geek-panel();
+    padding: 0;
     font-family: $font-mono;
-    font-size: 0.75rem;
+    font-size: 0.78rem;
     line-height: 1.8;
-    color: $neon-lime;
+    color: $text-secondary;
     opacity: 0;
     transform: translateX(40px);
     display: none;
+    z-index: 2;
 
     @include respond-to($bp-lg) {
-      display: block;
+      display: grid;
+      grid-template-columns: 32px 1fr;
+      align-items: center;
+      gap: $spacing-xs $spacing-sm;
+      padding: 0 0 0 0;
     }
 
-    &-bar {
+    & > *:not(.hero__tasklist-header):not(.hero__tasklist-footer) {
+      padding: 0 $spacing-sm;
+    }
+
+    & > .hero__tasklist-check {
+      margin-left: $spacing-sm;
+    }
+
+    &-header {
+      grid-column: 1 / -1;
       display: flex;
-      gap: 0.35rem;
-      padding-bottom: 0.5rem;
-      margin-bottom: 0.5rem;
-      border-bottom: 1px solid rgba($neon-cyan, 0.2);
+      align-items: center;
+      gap: 0.4rem;
+      padding: 0.5rem $spacing-sm;
+      background: $bg-muted;
+      border-bottom: $line-thin solid $line-muted;
+      margin-bottom: $spacing-xs;
+    }
 
-      span {
-        width: 10px;
-        height: 10px;
-        border-radius: 2px;
+    &-dot {
+      width: 10px;
+      height: 10px;
+      border: $line-thick solid $line-1;
+      @include pixel-corner(2px);
 
-        &:nth-child(1) { background: $neon-red; }
-        &:nth-child(2) { background: $neon-yellow; }
-        &:nth-child(3) { background: $neon-lime; }
+      &--r { background: $error; }
+      &--y { background: $warning; }
+      &--g { background: $success; }
+    }
+
+    &-title {
+      flex: 1;
+      color: $text-primary;
+      font-weight: 700;
+      font-size: 0.72rem;
+      padding-left: 0.35rem;
+    }
+
+    &-code {
+      color: $blue-primary;
+      font-weight: 700;
+      font-size: 0.65rem;
+    }
+
+    &-check {
+      position: relative;
+    }
+
+    &-item {
+      color: $text-secondary;
+      font-size: 0.78rem;
+      padding: 0.3rem 0;
+      cursor: pointer;
+      transition: all $duration-fast $ease-geek;
+
+      &:hover {
+        color: $blue-primary;
+        padding-left: 0.35rem;
+      }
+
+      &--done {
+        color: $text-muted;
+        text-decoration: line-through;
+        text-decoration-color: $success;
       }
     }
 
-    .prompt { color: $neon-magenta; }
-    .cmd { color: $color-text; }
-    .ok { color: $neon-lime; }
-    .dim { color: $color-text-faint; }
+    &-footer {
+      grid-column: 1 / -1;
+      padding: $spacing-xs $spacing-sm;
+      margin-top: $spacing-xs;
+      border-top: $line-thin dashed $line-muted;
+      font-size: 0.75rem;
+      color: $text-tertiary;
+      background: $bg-panel;
+    }
+
+    .prompt { color: $blue-primary; font-weight: 700; margin-right: 0.35rem; }
+    .cmd { color: $text-primary; font-weight: 600; }
   }
 }
 
@@ -232,9 +358,11 @@
   50% { transform: translateY(6px); opacity: 1; }
 }
 
-// Reduced Motion — Hero 开场动画被跳过时，
-// 强制展示 CSS 中处于「初始隐藏态」的内容
-// （与 Hero.tsx 的 REDUCED_MOTION 分支配对使用）
+@keyframes labelBlink {
+  0%, 49% { opacity: 1; }
+  50%, 100% { opacity: 0; }
+}
+
 @media (prefers-reduced-motion: reduce) {
   .hero__greeting,
   .hero__subtitle,
@@ -251,7 +379,7 @@
     opacity: 1;
   }
 
-  .hero__terminal {
+  .hero__tasklist {
     opacity: 1;
     transform: translateX(0);
   }

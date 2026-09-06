@@ -14,23 +14,23 @@ html {
   scroll-behavior: smooth;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  image-rendering: pixelated;
 }
 
 body {
   font-family: $font-body;
   font-weight: 500;
   line-height: 1.6;
-  color: $color-text;
-  background: $color-void;
+  color: $text-primary;
+  background: $bg-page;
   overflow-x: hidden;
   min-height: 100vh;
   position: relative;
+  cursor: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24'%3E%3Cpath d='M4 2L20 12L12 13L9 21L4 2Z' fill='%231A1A2E' stroke='%230055FF' stroke-width='2' stroke-linejoin='round'/%3E%3Cpath d='M12 13L17 18' stroke='%230055FF' stroke-width='2' stroke-linecap='round'/%3E%3Cpath d='M14 20L18 16' stroke='%230055FF' stroke-width='2' stroke-linecap='round'/%3E%3C/svg%3E") 2 2, auto;
 
   &::before {
     content: '';
     @include absolute-fill;
-    @include cyber-grid(rgba($neon-violet, 0.06), 60px);
+    @include tech-grid(rgba($line-1, 0.04), 50px);
     z-index: $z-bg - 1;
     pointer-events: none;
     position: fixed;
@@ -38,40 +38,48 @@ body {
 
   &::after {
     content: '';
-    @include absolute-fill;
-    @include scanlines;
-    z-index: $z-overlay - 1;
-    pointer-events: none;
     position: fixed;
-    opacity: 0.35;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background:
+      radial-gradient(circle at 20% 10%, rgba($blue-primary, 0.06) 0%, transparent 50%),
+      radial-gradient(circle at 80% 90%, rgba($blue-primary, 0.04) 0%, transparent 50%);
+    z-index: $z-bg;
+    pointer-events: none;
   }
 }
 
+a, button, [role="button"], input[type="checkbox"], input[type="radio"] {
+  cursor: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24'%3E%3Cpath d='M4 2L20 12L12 13L9 21L4 2Z' fill='%230055FF' stroke='%231A1A2E' stroke-width='2' stroke-linejoin='round'/%3E%3Ccircle cx='17' cy='17' r='3' fill='none' stroke='%230055FF' stroke-width='2'/%3E%3C/svg%3E") 2 2, pointer;
+}
+
 h1, h2, h3, h4, h5, h6 {
-  font-family: $font-display;
-  font-weight: 700;
+  font-family: $font-heading;
+  font-weight: 900;
   line-height: 1.1;
-  color: $color-text;
+  color: $text-primary;
   letter-spacing: 0.02em;
   text-transform: uppercase;
 }
 
 h1 { font-size: clamp(2.5rem, 7vw, 6rem); font-weight: 900; letter-spacing: -0.01em; }
 h2 { font-size: clamp(2rem, 5vw, 3.8rem); font-weight: 900; }
-h3 { font-size: clamp(1.4rem, 3vw, 2.3rem); font-weight: 700; }
-h4 { font-size: clamp(1.1rem, 2vw, 1.5rem); font-weight: 600; }
+h3 { font-size: clamp(1.4rem, 3vw, 2.3rem); font-weight: 800; }
+h4 { font-size: clamp(1.1rem, 2vw, 1.5rem); font-weight: 700; }
 
 p {
   font-size: clamp(0.95rem, 1.1vw, 1.1rem);
   line-height: 1.75;
-  color: $color-text-dim;
+  color: $text-secondary;
   font-family: $font-body;
 }
 
 a {
   color: inherit;
   text-decoration: none;
-  transition: all $duration-fast $ease-cyber;
+  transition: all $duration-fast $ease-geek;
 }
 
 button {
@@ -90,13 +98,20 @@ img, svg {
 
 code, .mono {
   font-family: $font-mono;
+  font-size: 0.9em;
+  background: $bg-muted;
+  padding: 0.1em 0.4em;
+  border: $line-thin solid $line-muted;
+  @include pixel-corner($pixel);
 }
 
 .pixel {
   font-family: $font-pixel;
   letter-spacing: 0.05em;
+  font-size: 0.85em;
 }
 
+// Section Base
 .section {
   position: relative;
   width: 100%;
@@ -117,8 +132,28 @@ code, .mono {
     left: 0;
     width: 100%;
     height: 2px;
-    background: linear-gradient(90deg, transparent 0%, $neon-cyan 20%, $neon-magenta 50%, $neon-violet 80%, transparent 100%);
-    opacity: 0.4;
+    background: repeating-linear-gradient(
+      90deg,
+      $line-1 0,
+      $line-1 12px,
+      transparent 12px,
+      transparent 20px
+    );
+    opacity: 0.6;
+  }
+
+  &::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 20px;
+    background:
+      linear-gradient(90deg, $line-1 2px, transparent 2px) 0 0 / 100px 20px,
+      linear-gradient(90deg, $blue-primary 1px, transparent 1px) 0 0 / 20px 20px;
+    opacity: 0.15;
+    pointer-events: none;
   }
 }
 
@@ -134,6 +169,7 @@ code, .mono {
   z-index: $z-content;
   @include max-width;
   width: 100%;
+  padding-top: $spacing-xl;
 }
 
 .section-label {
@@ -144,25 +180,42 @@ code, .mono {
   font-size: 0.75rem;
   letter-spacing: 0.25em;
   text-transform: uppercase;
-  color: $neon-cyan;
+  color: $blue-primary;
   font-weight: 700;
   margin-bottom: $spacing-md;
-  padding: 0.35rem 0.75rem;
-  border: 1px solid rgba($neon-cyan, 0.35);
-  background: rgba($neon-cyan, 0.05);
+  padding: 0.4rem 0.9rem;
+  border: $line-thick solid $line-1;
+  background: $bg-surface;
   @include pixel-corner($pixel);
+  position: relative;
 
   &::before {
-    content: '>';
-    color: $neon-magenta;
-    text-shadow: 0 0 6px rgba($neon-magenta, 0.8);
+    content: '☐';
+    color: $line-2;
+    font-size: 0.85em;
+    line-height: 1;
+    margin-right: 2px;
+  }
+
+  &::after {
+    content: '';
+    position: absolute;
+    top: -4px;
+    right: -4px;
+    width: 8px;
+    height: 8px;
+    background: $blue-primary;
+    border: $line-thick solid $line-1;
+    transform: rotate(45deg);
   }
 }
 
+// App Layout
 .app {
   position: relative;
   width: 100%;
   min-height: 100vh;
+  padding-top: 72px;
 }
 
 .main-content {
@@ -171,85 +224,57 @@ code, .mono {
 }
 
 ::selection {
-  background: $neon-magenta;
-  color: $color-void;
+  background: $blue-primary;
+  color: $text-invert;
 }
 
 ::-webkit-scrollbar {
-  width: 10px;
+  width: 12px;
 }
 
 ::-webkit-scrollbar-track {
-  background: $color-void-2;
-  border-left: 1px solid rgba($neon-violet, 0.2);
+  background: $bg-muted;
+  border-left: $line-thin solid $line-muted;
 }
 
 ::-webkit-scrollbar-thumb {
-  background: linear-gradient(180deg, $neon-cyan 0%, $neon-magenta 100%);
-  border-left: 1px solid rgba(0, 0, 0, 0.4);
+  background: $line-3;
+  border: 2px solid $bg-muted;
+  @include pixel-corner($pixel);
 
   &:hover {
-    box-shadow: 0 0 10px rgba($neon-cyan, 0.6);
+    background: $blue-primary;
+    @include glow-box($blue-primary, $glow-sm);
   }
 }
 
-.glitch-text {
-  @include glitch-text($neon-cyan, $neon-magenta);
-  animation: glitchJitter 3s infinite;
+// Checkbox component style
+.geek-checkbox {
+  @include checkbox-geek();
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
 
-  &::before {
-    animation: glitchClip1 3s steps(1) infinite;
-  }
-
-  &::after {
-    animation: glitchClip2 3s steps(1) infinite;
-  }
-}
-
-@keyframes glitchJitter {
-  0%, 92%, 100% { transform: translate(0, 0); }
-  93% { transform: translate(-1px, 1px); }
-  94% { transform: translate(2px, -1px); }
-  95% { transform: translate(-2px, 0); }
-  96% { transform: translate(1px, 2px); }
-}
-
-@keyframes glitchClip1 {
-  0%, 90%, 100% { clip-path: polygon(0 0, 100% 0, 100% 45%, 0 45%); transform: translate(0, 0); }
-  91% { clip-path: polygon(0 5%, 100% 20%, 100% 50%, 0 35%); transform: translate(-3px, 0); }
-  92% { clip-path: polygon(0 10%, 100% 30%, 100% 60%, 0 40%); transform: translate(2px, 0); }
-  93% { clip-path: polygon(0 0, 100% 0, 100% 45%, 0 45%); transform: translate(0, 0); }
-}
-
-@keyframes glitchClip2 {
-  0%, 90%, 100% { clip-path: polygon(0 55%, 100% 55%, 100% 100%, 0 100%); transform: translate(0, 0); }
-  91% { clip-path: polygon(0 60%, 100% 75%, 100% 95%, 0 85%); transform: translate(3px, 0); }
-  92% { clip-path: polygon(0 50%, 100% 65%, 100% 100%, 0 90%); transform: translate(-2px, 0); }
-  93% { clip-path: polygon(0 55%, 100% 55%, 100% 100%, 0 100%); transform: translate(0, 0); }
-}
-
-@keyframes neonFlicker {
-  0%, 19.999%, 22%, 62.999%, 64%, 64.999%, 70%, 100% {
-    opacity: 1;
-    filter: drop-shadow(0 0 $neon-blur-sm currentColor);
-  }
-  20%, 21.999%, 63%, 63.999%, 65%, 69.999% {
-    opacity: 0.5;
-    filter: none;
+  &.animate-check {
+    animation: checkboxPop 0.35s $ease-bounce;
   }
 }
 
-.neon-flicker {
-  animation: neonFlicker 4s linear infinite;
+@keyframes checkboxPop {
+  0% { transform: scale(1); }
+  40% { transform: scale(1.3); }
+  70% { transform: scale(0.9); }
+  100% { transform: scale(1); }
 }
 
-// ==========================================
-// Reduced Motion — 系统级「减少动态效果」降级
-// 纯 CSS 动画（glitch / blink / heartbeat /
-// 滚动线 / 扫描线等）全部收敛为静态；
-// GSAP 驱动的 JS 动画在各组件内通过
-// src/utils/motion.ts 跳过。
-// ==========================================
+// Connection line animation
+@keyframes circuitFlow {
+  0% { background-position: 0% 0%, 0% 0%; }
+  100% { background-position: 100% 0%, 0% 100%; }
+}
+
+// Reduced Motion
 @media (prefers-reduced-motion: reduce) {
   html {
     scroll-behavior: auto;

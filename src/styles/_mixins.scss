@@ -35,33 +35,39 @@
   height: 100%;
 }
 
-// Cyberpunk Neon Glow
-@mixin neon-glow($color, $size: $neon-blur-md) {
+// Geek Glow Effects (Royal Blue)
+@mixin glow-text($color: $blue-primary, $size: $glow-md) {
   text-shadow:
-    0 0 $neon-blur-sm rgba($color, 0.8),
-    0 0 $size rgba($color, 0.6),
-    0 0 ($size * 2) rgba($color, 0.3);
+    0 0 $glow-sm rgba($color, 0.6),
+    0 0 $size rgba($color, 0.4),
+    0 0 ($size * 2) rgba($color, 0.2);
 }
 
-@mixin neon-box-glow($color, $size: $neon-blur-md) {
+@mixin glow-box($color: $blue-primary, $size: $glow-md) {
   box-shadow:
-    inset 0 0 ($pixel * 2) rgba($color, 0.2),
-    0 0 $neon-blur-sm rgba($color, 0.5),
-    0 0 $size rgba($color, 0.3),
-    0 0 ($size * 2) rgba($color, 0.15);
+    inset 0 0 ($pixel * 2) rgba($color, 0.1),
+    0 0 $glow-sm rgba($color, 0.4),
+    0 0 $size rgba($color, 0.25),
+    0 0 ($size * 2) rgba($color, 0.12);
 }
 
-// Pixel Border (chunky stepped corners)
-@mixin pixel-border($color: $neon-cyan, $thickness: 2px) {
+// Dashed Border (Puzzle/Geek style)
+@mixin dashed-border($color: $line-2, $gap: 4px) {
+  border: $line-thick dashed $color;
+  background-image:
+    linear-gradient($color, $color),
+    linear-gradient($color, $color);
+  background-size: $line-thick 100%, 100% $line-thick;
+  background-repeat: no-repeat;
+  background-position: 0 0, 0 0, 100% 100%, 100% 100%;
+}
+
+// Solid Line Border (Geek style)
+@mixin line-border($color: $line-1, $thickness: $line-thick) {
   border: $thickness solid $color;
-  clip-path: polygon(
-    0 $pixel, $pixel $pixel, $pixel 0,
-    calc(100% - $pixel) 0, calc(100% - $pixel) $pixel, 100% $pixel,
-    100% calc(100% - $pixel), calc(100% - $pixel) calc(100% - $pixel), calc(100% - $pixel) 100%,
-    $pixel 100%, $pixel calc(100% - $pixel), 0 calc(100% - $pixel)
-  );
 }
 
+// Pixel Corner (stepped) - keep but adapt
 @mixin pixel-corner($size: $pixel-2) {
   clip-path: polygon(
     0 $size, $size $size, $size 0,
@@ -71,88 +77,59 @@
   );
 }
 
-// Cyber Grid Background
-@mixin cyber-grid($line-color: rgba($neon-cyan, 0.08), $size: 50px) {
+// Grid Background (Tech Paper style)
+@mixin tech-grid($line-color: rgba($line-1, 0.06), $size: 40px) {
   background-image:
     linear-gradient($line-color 1px, transparent 1px),
     linear-gradient(90deg, $line-color 1px, transparent 1px);
   background-size: $size $size;
 }
 
-// Scanline Effect
-@mixin scanlines {
-  background-image: repeating-linear-gradient(
-    to bottom,
-    transparent 0,
-    transparent 2px,
-    rgba(0, 0, 0, 0.15) 2px,
-    rgba(0, 0, 0, 0.15) 4px
-  );
-  pointer-events: none;
+// Circuit Board pattern
+@mixin circuit-pattern($line-color: rgba($blue-primary, 0.15)) {
+  background:
+    linear-gradient($line-color 1px, transparent 1px) 0 0 / 16px 16px,
+    linear-gradient(90deg, $line-color 1px, transparent 1px) 0 0 / 16px 16px,
+    radial-gradient(circle, $line-color 1px, transparent 1px) 8px 8px / 16px 16px;
 }
 
-// Gradient Text (Cyber)
-@mixin gradient-neon($gradient) {
-  background: $gradient;
+// Gradient Text (Blue)
+@mixin gradient-blue-text {
+  background: $gradient-blue;
   -webkit-background-clip: text;
   background-clip: text;
   -webkit-text-fill-color: transparent;
   color: transparent;
 }
 
-// Glitch Text Mixin (uses data-text)
-@mixin glitch-text($c1: $neon-cyan, $c2: $neon-magenta) {
-  position: relative;
-
-  &::before,
-  &::after {
-    content: attr(data-text);
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    overflow: hidden;
-  }
-
-  &::before {
-    color: $c1;
-    transform: translate(2px, 0);
-    clip-path: polygon(0 0, 100% 0, 100% 45%, 0 45%);
-    mix-blend-mode: screen;
-    opacity: 0.9;
-  }
-
-  &::after {
-    color: $c2;
-    transform: translate(-2px, 0);
-    clip-path: polygon(0 55%, 100% 55%, 100% 100%, 0 100%);
-    mix-blend-mode: screen;
-    opacity: 0.9;
-  }
-}
-
-// Cyber Panel
-@mixin cyber-panel($accent: $neon-cyan) {
-  background: rgba($color-panel, 0.7);
-  backdrop-filter: blur(8px);
-  -webkit-backdrop-filter: blur(8px);
-  border: 1px solid rgba($accent, 0.3);
+// Geek Panel (Light surface + dashed border)
+@mixin geek-panel($accent: $blue-primary) {
+  background: $bg-surface;
+  border: $line-thick solid $line-1;
   @include pixel-corner($pixel-2);
   position: relative;
 
   &::before {
     content: '';
     position: absolute;
+    inset: 4px;
+    border: $line-thin dashed rgba($accent, 0.5);
+    pointer-events: none;
+    @include pixel-corner($pixel);
+  }
+
+  &::after {
+    content: '';
+    position: absolute;
     inset: 0;
-    background: linear-gradient(135deg, rgba($accent, 0.05) 0%, transparent 50%);
+    background: linear-gradient(135deg, rgba($accent, 0.03) 0%, transparent 50%);
     pointer-events: none;
     @include pixel-corner($pixel-2);
   }
 }
 
-// Corner Brackets
-@mixin corner-brackets($color: $neon-cyan, $size: 16px) {
+// Task List Corner Brackets (Dashed)
+@mixin corner-brackets-dashed($color: $line-2, $size: 16px) {
   position: relative;
 
   &::before,
@@ -161,21 +138,111 @@
     position: absolute;
     width: $size;
     height: $size;
-    border: 2px solid $color;
+    border: $line-thick dashed $color;
     pointer-events: none;
   }
 
   &::before {
-    top: -4px;
-    left: -4px;
+    top: -6px;
+    left: -6px;
     border-right: none;
     border-bottom: none;
   }
 
   &::after {
-    bottom: -4px;
-    right: -4px;
+    bottom: -6px;
+    right: -6px;
     border-left: none;
     border-top: none;
+  }
+}
+
+// Checkbox Geek Style
+@mixin checkbox-geek($accent: $blue-primary) {
+  position: relative;
+  width: 20px;
+  height: 20px;
+  border: $line-thick solid $line-1;
+  background: $bg-surface;
+  @include pixel-corner($pixel);
+  cursor: pointer;
+  transition: all $duration-fast $ease-geek;
+
+  &:hover {
+    border-color: $accent;
+    @include glow-box($accent, $glow-sm);
+  }
+
+  &.is-checked {
+    background: $accent;
+    border-color: $accent;
+    @include glow-box($accent, $glow-sm);
+
+    &::after {
+      content: '';
+      position: absolute;
+      left: 5px;
+      top: 1px;
+      width: 6px;
+      height: 11px;
+      border: solid $text-invert;
+      border-width: 0 $line-thick $line-thick 0;
+      transform: rotate(45deg);
+    }
+  }
+}
+
+// Connection Lines (Circuit style between elements)
+@mixin connection-dot($color: $blue-primary) {
+  position: relative;
+
+  &::before {
+    content: '';
+    position: absolute;
+    width: 8px;
+    height: 8px;
+    background: $color;
+    border: $line-thick solid $line-1;
+    transform: rotate(45deg);
+  }
+}
+
+// Tab Style (Nav bar tabs)
+@mixin tab-nav($accent: $blue-primary) {
+  padding: 0.75rem 1.25rem;
+  font-family: $font-mono;
+  font-size: 0.8rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: $text-secondary;
+  border: $line-thick solid transparent;
+  border-bottom: none;
+  background: transparent;
+  cursor: pointer;
+  transition: all $duration-fast $ease-geek;
+  position: relative;
+
+  &:hover {
+    color: $accent;
+    background: rgba($accent, 0.05);
+  }
+
+  &.is-active {
+    color: $accent;
+    background: $bg-surface;
+    border-color: $line-1;
+    @include glow-text($accent, $glow-sm);
+
+    &::after {
+      content: '';
+      position: absolute;
+      bottom: -2px;
+      left: 8px;
+      right: 8px;
+      height: 2px;
+      background: $accent;
+      @include glow-box($accent, $glow-sm);
+    }
   }
 }

@@ -43,24 +43,28 @@ const DribbbleIcon = () => (
 
 interface SocialLink {
   label: string
+  code: string
   Icon: () => JSX.Element
-  /** 可选：真实主页地址。缺省时渲染为禁用态占位（不再跳到页面顶部） */
   href?: string
 }
 
 const socials: SocialLink[] = [
-  { label: 'Twitter', Icon: TwitterIcon },
-  // GitHub 依据当前仓库远端（github.com/logic-beep）填写；其余待补充真实地址
-  { label: 'GitHub', Icon: GithubIcon, href: 'https://github.com/logic-beep' },
-  { label: 'LinkedIn', Icon: LinkedinIcon },
-  { label: 'Dribbble', Icon: DribbbleIcon },
+  { label: 'Twitter',  code: '0x01', Icon: TwitterIcon },
+  { label: 'GitHub',   code: '0x02', Icon: GithubIcon, href: 'https://github.com/logic-beep' },
+  { label: 'LinkedIn', code: '0x03', Icon: LinkedinIcon },
+  { label: 'Dribbble', code: '0x04', Icon: DribbbleIcon },
+]
+
+const quests = [
+  { id: 'q1', done: true,  label: '建立清晰的任务需求文档', hint: 'PRD_v2.1' },
+  { id: 'q2', done: true,  label: '对齐技术栈与交付时间线', hint: 'Stack: React/TS/Vite' },
+  { id: 'q3', done: false, label: '启动下一个有趣的项目 — 一起？', hint: 'YOU + ME = ?' },
 ]
 
 const Contact = () => {
   const container = useRef<HTMLElement>(null)
 
   useGSAP(() => {
-    // 减少动态效果：跳过入场动画，内容保持静态可见
     if (REDUCED_MOTION) return
 
     const tl = gsap.timeline({
@@ -86,11 +90,12 @@ const Contact = () => {
       stagger: 0.18,
     }, 0.1)
 
-    tl.from('.contact__desc', {
-      y: 45,
+    tl.from('.contact__quest-item', {
+      x: -40,
       opacity: 0,
-      duration: 0.9,
-    }, 0.4)
+      duration: 0.6,
+      stagger: 0.1,
+    }, 0.3)
 
     tl.from('.contact__email', {
       y: 30,
@@ -104,7 +109,7 @@ const Contact = () => {
       y: 40,
       opacity: 0,
       scale: 0.7,
-      rotation: -15,
+      rotation: -5,
       duration: 0.65,
       stagger: 0.09,
       ease: 'back.out(1.6)',
@@ -121,33 +126,51 @@ const Contact = () => {
     <section ref={container} className="section contact" id="contact">
       <div className="section-bg contact-bg" />
       <div className="section-content contact-content">
-        <span className="contact__label">Initiate Connection // UPLINK_READY</span>
+        <span className="section-label contact__label">
+          NEXT_QUEST // SEND_MESSAGE — 0x04
+        </span>
 
         <h2 className="contact__title">
-          有项目？
+          手头有任务？
           <br />
-          <span
-            className="contact__title--accent glitch-text"
-            data-text="//ESTABLISH_LINK"
-          >
-            //ESTABLISH_LINK
+          <span className="contact__title--accent">
+            //PAIR_PROGRAMMING_MODE
           </span>
         </h2>
 
-        <p className="contact__desc">
-          无论是 <span className="hl">freelance 合作</span>、全职 Offer，
-          还是单纯想打个招呼聊技术 / 合成波 / 咖啡，
-          我都在另一端等你。<br />
-          <span className="hl">[SYS]</span> 平均响应时间：24 小时内。
-        </p>
+        <div className="contact__quest">
+          <div className="contact__quest-header">
+            <span className="contact__quest-title">QUEST_LIST.txt</span>
+            <span className="contact__quest-meta">v2.1 · LAST_MODIFIED: TODAY</span>
+          </div>
+          <ul className="contact__quest-body">
+            {quests.map(q => (
+              <li key={q.id} className={`contact__quest-item ${q.done ? 'is-done' : ''}`}>
+                <span className={`geek-checkbox ${q.done ? 'is-checked' : ''}`} aria-hidden="true" />
+                <span className="contact__quest-label">{q.label}</span>
+                <span className="contact__quest-hint">// {q.hint}</span>
+              </li>
+            ))}
+          </ul>
+          <div className="contact__quest-footer">
+            <span className="contact__quest-prompt">$</span>
+            <span className="contact__quest-cursor" />
+            <span className="contact__quest-hint">await next_question( )</span>
+          </div>
+        </div>
 
-        <a href="mailto:hello@cyberdev.io" className="contact__email">
+        <a href="mailto:hello@geek.dev" className="contact__email">
           <MailIcon />
-          <span>hello@cyberdev.io</span>
+          <span>hello@geek.dev</span>
         </a>
 
+        <div className="contact__social-label">
+          <span className="contact__social-label-text">CONTACT_CHANNELS</span>
+          <span className="contact__social-label-line" />
+        </div>
+
         <div className="contact__social">
-          {socials.map(({ label, Icon, href }) =>
+          {socials.map(({ label, code, Icon, href }) =>
             href ? (
               <a
                 key={label}
@@ -157,7 +180,9 @@ const Contact = () => {
                 className="contact__social-link"
                 aria-label={label}
               >
+                <span className="contact__social-code">{code}</span>
                 <Icon />
+                <span className="contact__social-name">{label}</span>
               </a>
             ) : (
               <span
@@ -166,7 +191,9 @@ const Contact = () => {
                 aria-disabled="true"
                 title={`${label} 链接待补充：请在 Contact.tsx 的 socials 数组中填写 href`}
               >
+                <span className="contact__social-code">{code}</span>
                 <Icon />
+                <span className="contact__social-name">{label}</span>
               </span>
             )
           )}
@@ -174,10 +201,10 @@ const Contact = () => {
 
         <footer className="contact__footer">
           <span className="contact__footer-left">
-            © 2077 — Built with <span className="heart">❤</span> & neon electrons
+            © 2025 — Built with <span className="heart">◆</span> &amp; blue pixels
           </span>
           <span className="contact__footer-right">
-            // DESIGNED &amp; HACKED IN SHANGHAI
+            // ASSEMBLED &amp; DEBUGGED IN SHANGHAI
           </span>
         </footer>
       </div>

@@ -6,184 +6,131 @@ import { REDUCED_MOTION } from '../../utils/motion'
 const HUDCorners = () => (
   <>
     <div className="decorations__hud decorations__hud--tl">
-      <span>SYS.INIT</span>
-      <span>PORTFOLIO_v2.077</span>
-      <span>STATUS: ONLINE</span>
+      <span>TASK.LIST</span>
+      <span>QUEST_01_ACTIVE</span>
+      <span>STATUS: ON_TRACK</span>
     </div>
     <div className="decorations__hud decorations__hud--tr">
-      <span>NET.CONN</span>
-      <span>PING: 12ms</span>
-      <span>NODE: CN-SH-01</span>
+      <span>SYS.LOG</span>
+      <span>LINE: 0482</span>
+      <span>NODE: MAIN_BRANCH</span>
     </div>
     <div className="decorations__hud decorations__hud--bl">
-      <span>CPU: 04%</span>
-      <span>MEM: 128MB</span>
-      <span>GPU: IDLE</span>
+      <span>PROGRESS</span>
+      <span>FILES: 128/256</span>
+      <span>BUILD: PASSED</span>
     </div>
     <div className="decorations__hud decorations__hud--br">
-      <span id="hud-time">TIME: 00:00:00</span>
-      <span>FRAME: 60Hz</span>
-      <span>RENDER: WEBGL</span>
+      <span id="hud-time">CLOCK: 00:00:00</span>
+      <span>DEPTH: LVL_05</span>
+      <span>HINT: SCROLL_DOWN</span>
     </div>
   </>
 )
 
+const CircuitSVG = () => (
+  <svg className="decorations__circuit-svg" viewBox="0 0 1200 800" preserveAspectRatio="none" aria-hidden="true">
+    <defs>
+      <linearGradient id="circuitGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+        <stop offset="0%" stopColor="rgba(0, 85, 255, 0)" />
+        <stop offset="50%" stopColor="rgba(0, 85, 255, 0.4)" />
+        <stop offset="100%" stopColor="rgba(0, 85, 255, 0)" />
+      </linearGradient>
+    </defs>
+    <g stroke="url(#circuitGrad)" strokeWidth="1.5" fill="none">
+      <path d="M50,80 L200,80 L200,160 L380,160" />
+      <path d="M380,160 L380,300 L520,300 L520,220 L680,220" />
+      <path d="M680,220 L680,100 L850,100" />
+      <path d="M850,100 L850,260 L1000,260 L1000,140 L1150,140" />
+      <path d="M80,400 L280,400 L280,520 L450,520" />
+      <path d="M450,520 L450,640 L620,640 L620,560 L780,560" />
+      <path d="M780,560 L780,680 L950,680 L950,600 L1120,600" />
+      <path d="M120,720 L300,720 L300,720 L300,620 L500,620" />
+    </g>
+    <g fill="#0055FF" stroke="#1A1A2E" strokeWidth="1.5">
+      <rect x="190" y="72" width="12" height="12" transform="rotate(45 196 78)" />
+      <rect x="370" y="152" width="12" height="12" transform="rotate(45 376 158)" />
+      <rect x="510" y="292" width="12" height="12" transform="rotate(45 516 298)" />
+      <rect x="670" y="212" width="12" height="12" transform="rotate(45 676 218)" />
+      <rect x="840" y="92" width="12" height="12" transform="rotate(45 846 98)" />
+      <rect x="990" y="252" width="12" height="12" transform="rotate(45 996 258)" />
+      <rect x="270" y="392" width="12" height="12" transform="rotate(45 276 398)" />
+      <rect x="440" y="512" width="12" height="12" transform="rotate(45 446 518)" />
+      <rect x="610" y="632" width="12" height="12" transform="rotate(45 616 638)" />
+      <rect x="770" y="552" width="12" height="12" transform="rotate(45 776 558)" />
+      <rect x="940" y="672" width="12" height="12" transform="rotate(45 946 678)" />
+    </g>
+    <g fill="none" stroke="#1A1A2E" strokeWidth="1" strokeDasharray="4 4" opacity="0.5">
+      <rect x="40" y="60" width="180" height="100" />
+      <rect x="350" y="130" width="220" height="190" />
+      <rect x="820" y="70" width="220" height="210" />
+      <rect x="60" y="380" width="440" height="170" />
+      <rect x="750" y="540" width="380" height="170" />
+    </g>
+  </svg>
+)
+
 const Decorations = () => {
   const container = useRef<HTMLDivElement>(null)
-  const rainCanvas = useRef<HTMLCanvasElement>(null)
 
   useGSAP(() => {
-    // 减少动态效果：霓虹光斑 / 像素粒子 / 滚动视差全部跳过
     if (REDUCED_MOTION) return
 
-    const neons = gsap.utils.toArray<HTMLElement>('.decorations__neon')
-    neons.forEach((el, i) => {
+    const dots = gsap.utils.toArray<HTMLElement>('.decorations__node')
+    dots.forEach((el, i) => {
+      gsap.set(el, { opacity: 0.4 + (i % 3) * 0.2 })
       gsap.to(el, {
-        x: () => gsap.utils.random(-50, 50),
-        y: () => gsap.utils.random(-60, 60),
-        scale: () => gsap.utils.random(0.95, 1.15),
-        duration: 8 + i * 2,
+        opacity: 1,
+        scale: 1.3,
+        duration: () => gsap.utils.random(1.2, 2.2),
         ease: 'sine.inOut',
         repeat: -1,
         yoyo: true,
+        delay: i * 0.25,
       })
     })
 
-    const pixels = gsap.utils.toArray<HTMLElement>('.decorations__pixel')
-    pixels.forEach((el, i) => {
-      gsap.set(el, {
-        opacity: () => gsap.utils.random(0.3, 0.9),
-      })
-      gsap.to(el, {
-        y: `random(-80, 80, 5)`,
-        x: `random(-40, 40, 5)`,
-        rotation: () => gsap.utils.random(0, 90),
-        opacity: () => gsap.utils.random(0.1, 1),
-        duration: () => gsap.utils.random(3, 6),
-        ease: 'power1.inOut',
-        repeat: -1,
-        yoyo: true,
-        delay: i * 0.4,
-      })
-    })
-
-    gsap.to('.decorations__neon--1', {
-      yPercent: -25,
-      xPercent: -10,
+    gsap.to('.decorations__circuit-svg', {
+      yPercent: -8,
+      xPercent: 3,
+      rotation: 1,
       scrollTrigger: {
         trigger: document.body,
         start: 'top top',
         end: 'bottom bottom',
-        scrub: 1,
-      },
-    })
-    gsap.to('.decorations__neon--2', {
-      yPercent: -18,
-      xPercent: 8,
-      scrollTrigger: {
-        trigger: document.body,
-        start: 'top top',
-        end: 'bottom bottom',
-        scrub: 1,
-      },
-    })
-    gsap.to('.decorations__neon--3', {
-      yPercent: 20,
-      xPercent: -12,
-      scrollTrigger: {
-        trigger: document.body,
-        start: 'top top',
-        end: 'bottom bottom',
-        scrub: 1,
+        scrub: 1.5,
       },
     })
   }, { scope: container })
 
   useEffect(() => {
-    // HUD 时钟始终运行（无动态效果，仅文本每秒刷新）
     const updateTime = () => {
       const el = document.getElementById('hud-time')
       if (el) {
         const now = new Date()
         const t = now.toTimeString().split(' ')[0]
-        el.textContent = `TIME: ${t}`
+        el.textContent = `CLOCK: ${t}`
       }
     }
     const timeInt = setInterval(updateTime, 1000)
     updateTime()
-
-    // 减少动态效果：不启动数字雨 Canvas 渲染循环
-    if (REDUCED_MOTION) {
-      return () => clearInterval(timeInt)
-    }
-
-    const canvas = rainCanvas.current
-    if (!canvas) {
-      return () => clearInterval(timeInt)
-    }
-    const ctx = canvas.getContext('2d')
-    if (!ctx) {
-      return () => clearInterval(timeInt)
-    }
-
-    let animationId: number
-    const resize = () => {
-      canvas.width = canvas.offsetWidth
-      canvas.height = canvas.offsetHeight
-    }
-    resize()
-    window.addEventListener('resize', resize)
-
-    const chars = 'アイウエオカキクケコサシスセソタチツテトナニヌネノハヒフヘホマミムメモヤユヨラリルレロワヲン0123456789{}[]<>|/\\#@$%&*'.split('')
-    const fontSize = 14
-    const columns = Math.floor(canvas.width / fontSize)
-    const drops: number[] = Array(columns).fill(1)
-
-    const draw = () => {
-      ctx.fillStyle = 'rgba(5, 1, 15, 0.06)'
-      ctx.fillRect(0, 0, canvas.width, canvas.height)
-
-      ctx.font = `${fontSize}px Space Mono, monospace`
-
-      for (let i = 0; i < drops.length; i++) {
-        const text = chars[Math.floor(Math.random() * chars.length)]
-        const gradient = (drops[i] * fontSize) / canvas.height
-        const r = Math.floor(0 + gradient * 100)
-        const g = Math.floor(240 - gradient * 180)
-        const b = Math.floor(255 - gradient * 100)
-        ctx.fillStyle = `rgba(${r},${g},${b},${0.3 + gradient * 0.7})`
-        ctx.fillText(text, i * fontSize, drops[i] * fontSize)
-
-        if (drops[i] * fontSize > canvas.height && Math.random() > 0.975) {
-          drops[i] = 0
-        }
-        drops[i]++
-      }
-      animationId = requestAnimationFrame(draw)
-    }
-    draw()
-
-    return () => {
-      cancelAnimationFrame(animationId)
-      window.removeEventListener('resize', resize)
-      clearInterval(timeInt)
-    }
+    return () => clearInterval(timeInt)
   }, [])
 
   return (
     <div ref={container} className="decorations" aria-hidden="true">
-       <div className="decorations__circuits" />
+      <CircuitSVG />
 
-      <div className="decorations__neon decorations__neon--1" />
-      <div className="decorations__neon decorations__neon--2" />
-      <div className="decorations__neon decorations__neon--3" />
-      <div className="decorations__neon decorations__neon--4" />
+      <div className="decorations__nodes">
+        {Array.from({ length: 10 }).map((_, i) => (
+          <div
+            key={i}
+            className={`decorations__node decorations__node--${i + 1}`}
+          />
+        ))}
+      </div>
 
-      <canvas ref={rainCanvas} className="decorations__rain" />
-
-      {Array.from({ length: 8 }).map((_, i) => (
-        <div key={i} className={`decorations__pixel decorations__pixel--${i + 1}`} />
-      ))}
+      <div className="decorations__connections" />
 
       <HUDCorners />
     </div>

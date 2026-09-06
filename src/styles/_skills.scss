@@ -4,13 +4,14 @@
 .skills {
   &-bg {
     background:
-      radial-gradient(ellipse 70% 60% at 20% 40%, rgba($neon-lime, 0.18) 0%, transparent 70%),
-      radial-gradient(ellipse 60% 50% at 85% 80%, rgba($neon-cyan, 0.25) 0%, transparent 70%);
+      radial-gradient(ellipse 70% 60% at 80% 30%, rgba($blue-primary, 0.08) 0%, transparent 70%),
+      radial-gradient(ellipse 60% 50% at 15% 80%, rgba($blue-primary, 0.05) 0%, transparent 70%),
+      linear-gradient(180deg, $bg-page 0%, $bg-panel 50%, $bg-surface 100%);
 
     &::after {
       content: '';
       @include absolute-fill;
-      @include cyber-grid(rgba($neon-lime, 0.04), 35px);
+      @include tech-grid(rgba($line-1, 0.04), 35px);
     }
   }
 
@@ -24,8 +25,10 @@
         margin-bottom: $spacing-sm;
 
         .hl {
-          @include gradient-neon($gradient-neon-lc);
-          @include neon-glow($neon-lime, $neon-blur-sm);
+          @include gradient-blue-text;
+          @include glow-text($blue-primary, $glow-sm);
+          display: inline-block;
+          position: relative;
         }
       }
 
@@ -34,7 +37,12 @@
         margin: 0 auto;
         font-family: $font-mono;
         font-size: 0.95rem;
-        color: $color-text-dim;
+        color: $text-tertiary;
+        padding: $spacing-xs $spacing-sm;
+        background: $bg-surface;
+        border: $line-thin dashed $line-muted;
+        @include pixel-corner($pixel);
+        display: inline-block;
       }
     }
   }
@@ -57,8 +65,10 @@
   &__card {
     position: relative;
     padding: $spacing-md $spacing-sm;
-    @include cyber-panel($neon-lime);
-    transition: all $duration-normal $ease-cyber;
+    background: $bg-surface;
+    border: $line-thick solid $line-1;
+    @include pixel-corner($pixel-2);
+    transition: all $duration-normal $ease-geek;
     overflow: hidden;
 
     @include respond-to($bp-md) {
@@ -72,33 +82,60 @@
       right: -60%;
       width: 100%;
       height: 100%;
-      background: conic-gradient(from 0deg, transparent 0%, rgba($neon-cyan, 0.25) 40%, transparent 60%);
+      background: conic-gradient(from 0deg, transparent 0%, rgba($blue-primary, 0.15) 40%, transparent 60%);
       filter: blur(30px);
       opacity: 0;
-      transition: opacity $duration-normal $ease-cyber;
+      transition: opacity $duration-normal $ease-geek;
       z-index: 0;
     }
 
     &::after {
       content: '';
       position: absolute;
-      inset: 0;
-      background:
-        linear-gradient(135deg, transparent 0%, rgba($neon-magenta, 0.08) 100%);
+      inset: 4px;
+      border: $line-thin dashed rgba($line-2, 0.3);
       opacity: 0;
-      transition: opacity $duration-normal $ease-cyber;
+      transition: opacity $duration-normal $ease-geek;
       pointer-events: none;
+      @include pixel-corner($pixel);
     }
 
     &:hover {
       transform: translateY(-6px) scale(1.015);
-      @include neon-box-glow($neon-lime, $neon-blur-md);
-      border-color: rgba($neon-lime, 0.6);
+      @include glow-box($blue-primary, $glow-md);
+      border-color: $blue-primary;
 
       &::before,
       &::after {
         opacity: 1;
       }
+      &::after {
+        border-color: rgba($blue-primary, 0.5);
+      }
+    }
+
+    &-corner-tl {
+      position: absolute;
+      top: -1px;
+      left: -1px;
+      width: 14px;
+      height: 14px;
+      border-top: $line-thick solid $blue-primary;
+      border-left: $line-thick solid $blue-primary;
+      z-index: 2;
+      @include glow-box($blue-primary, $glow-sm);
+    }
+
+    &-corner-br {
+      position: absolute;
+      bottom: -1px;
+      right: -1px;
+      width: 14px;
+      height: 14px;
+      border-bottom: $line-thick solid $blue-primary;
+      border-right: $line-thick solid $blue-primary;
+      z-index: 2;
+      @include glow-box($blue-primary, $glow-sm);
     }
 
     &-icon {
@@ -106,27 +143,27 @@
       z-index: 1;
       width: 3.5rem;
       height: 3.5rem;
-      background: $color-panel-2;
+      background: $bg-panel;
       @include pixel-corner($pixel-2);
       @include flex-center;
       margin-bottom: $spacing-md;
-      border: 1px solid rgba($neon-cyan, 0.4);
+      border: $line-thin solid $line-muted;
 
       svg {
         width: 1.8rem;
         height: 1.8rem;
-        color: $neon-cyan;
-        filter: drop-shadow(0 0 6px rgba($neon-cyan, 0.8));
+        color: $blue-primary;
+        filter: drop-shadow(0 0 4px rgba($blue-primary, 0.3));
       }
     }
 
     &-title {
       position: relative;
       z-index: 1;
-      font-family: $font-display;
-      font-size: 1.1rem;
+      font-family: $font-heading;
+      font-size: 1.05rem;
       font-weight: 700;
-      color: $color-text;
+      color: $text-primary;
       margin-bottom: 0.4rem;
       letter-spacing: 0.02em;
     }
@@ -136,9 +173,10 @@
       z-index: 1;
       font-size: 0.85rem;
       line-height: 1.6;
-      color: $color-text-dim;
+      color: $text-tertiary;
       margin-bottom: $spacing-md;
       min-height: 2.6em;
+      font-family: $font-mono;
     }
 
     &-level {
@@ -147,9 +185,9 @@
 
       &-bar {
         width: 100%;
-        height: 8px;
-        background: rgba($color-void, 0.6);
-        border: 1px solid rgba($neon-lime, 0.25);
+        height: 10px;
+        background: $bg-input;
+        border: $line-thin solid $line-2;
         @include pixel-corner($pixel);
         overflow: hidden;
         position: relative;
@@ -157,17 +195,18 @@
 
       &-fill {
         height: 100%;
-        background: linear-gradient(90deg, $neon-cyan 0%, $neon-lime 100%);
+        background: linear-gradient(90deg, $blue-primary-dark 0%, $blue-primary-light 100%);
         width: 100%;
         transform: scaleX(0);
         transform-origin: left;
         position: relative;
+        @include glow-box($blue-primary, $glow-sm);
 
         &::after {
           content: '';
           position: absolute;
           inset: 0;
-          background: linear-gradient(90deg, transparent 0%, rgba(255, 255, 255, 0.4) 50%, transparent 100%);
+          background: linear-gradient(90deg, transparent 0%, rgba(255, 255, 255, 0.5) 50%, transparent 100%);
           animation: skillsShine 2s linear infinite;
         }
       }
@@ -175,16 +214,39 @@
       &-label {
         display: flex;
         justify-content: space-between;
+        align-items: center;
         margin-bottom: 0.4rem;
         font-family: $font-mono;
         font-size: 0.65rem;
         letter-spacing: 0.1em;
         text-transform: uppercase;
 
-        span:first-child { color: $neon-lime; }
-        span:last-child { color: $neon-cyan; }
+        span:first-child {
+          color: $blue-primary-dark;
+          font-weight: 700;
+        }
+      }
+
+      &-num {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.35rem;
+        color: $text-secondary;
+        font-weight: 700;
       }
     }
+  }
+}
+
+.geek-checkbox--mini {
+  width: 12px;
+  height: 12px;
+
+  &.is-checked::after {
+    left: 2px;
+    top: -2px;
+    width: 4px;
+    height: 8px;
   }
 }
 

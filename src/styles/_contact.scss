@@ -4,16 +4,15 @@
 .contact {
   &-bg {
     background:
-      radial-gradient(ellipse 80% 60% at 50% 0%, rgba($neon-red, 0.18) 0%, transparent 60%),
-      radial-gradient(ellipse 70% 50% at 50% 100%, rgba($neon-violet, 0.25) 0%, transparent 70%),
-      linear-gradient(180deg, transparent 0%, rgba($color-void, 0.6) 100%);
+      radial-gradient(ellipse 80% 60% at 50% 0%, rgba($blue-primary, 0.08) 0%, transparent 60%),
+      linear-gradient(180deg, transparent 0%, rgba($blue-primary, 0.04) 100%);
 
     &::after {
       content: '';
       @include absolute-fill;
-      @include cyber-grid(rgba($neon-red, 0.04), 50px);
-      mask-image: radial-gradient(circle at center, black 0%, transparent 80%);
-      -webkit-mask-image: radial-gradient(circle at center, black 0%, transparent 80%);
+      @include tech-grid(rgba($blue-primary, 0.04), 50px);
+      mask-image: radial-gradient(circle at center, black 0%, transparent 85%);
+      -webkit-mask-image: radial-gradient(circle at center, black 0%, transparent 85%);
     }
   }
 
@@ -27,57 +26,139 @@
   }
 
   &__label {
-    display: inline-flex;
-    align-items: center;
-    gap: 0.5rem;
-    padding: 0.4rem 1.1rem;
-    background: rgba($neon-red, 0.08);
-    color: $neon-red;
-    @include pixel-corner($pixel);
-    font-family: $font-mono;
-    font-size: 0.7rem;
-    letter-spacing: 0.3em;
-    text-transform: uppercase;
     margin-bottom: $spacing-md;
-    border: 1px solid rgba($neon-red, 0.35);
-    font-weight: 700;
-    @include neon-glow($neon-red, $neon-blur-sm);
-
-    &::before {
-      content: '▮';
-      color: $neon-magenta;
-      animation: labelBlink 1.2s steps(2) infinite;
-    }
   }
 
   &__title {
-    font-family: $font-display;
-    font-size: clamp(2.5rem, 7vw, 5rem);
+    font-family: $font-heading;
+    font-size: clamp(2.2rem, 6vw, 4.5rem);
     font-weight: 900;
     line-height: 1.05;
     margin-bottom: $spacing-md;
     max-width: 900px;
     letter-spacing: -0.01em;
+    color: $text-primary;
 
     &--accent {
       font-style: normal;
       font-weight: 900;
-      @include gradient-neon($gradient-neon-rv);
-      @include neon-glow($neon-magenta, $neon-blur-md);
+      @include gradient-blue-text;
+      @include glow-text($blue-primary, $glow-sm);
+      letter-spacing: 0.02em;
     }
   }
 
-  &__desc {
-    max-width: 560px;
-    font-size: 1rem;
-    line-height: 1.85;
+  &__quest {
+    width: 100%;
+    max-width: 640px;
     margin-bottom: $spacing-lg;
-    color: $color-text-dim;
-    font-family: $font-mono;
-    padding: 0 $spacing-sm;
+    text-align: left;
+    @include geek-panel;
 
-    .hl {
-      color: $neon-cyan;
+    &-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: $spacing-sm $spacing-md;
+      border-bottom: $line-thin dashed $line-3;
+      margin-bottom: $spacing-xs;
+    }
+
+    &-title {
+      font-family: $font-mono;
+      font-size: 0.75rem;
+      letter-spacing: 0.15em;
+      color: $blue-primary;
+      font-weight: 700;
+      text-transform: uppercase;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+
+      &::before {
+        content: '';
+        display: inline-block;
+        width: 8px;
+        height: 8px;
+        background: $blue-primary;
+        transform: rotate(45deg);
+        @include glow-box($blue-primary, $glow-sm);
+      }
+    }
+
+    &-meta {
+      font-family: $font-mono;
+      font-size: 0.65rem;
+      letter-spacing: 0.1em;
+      color: $text-tertiary;
+    }
+
+    &-body {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+    }
+
+    &-item {
+      display: grid;
+      grid-template-columns: 24px 1fr auto;
+      align-items: center;
+      gap: $spacing-xs $spacing-sm;
+      padding: $spacing-sm $spacing-md;
+      border-bottom: $line-thin dashed $line-4;
+      font-family: $font-mono;
+      font-size: 0.85rem;
+      color: $text-secondary;
+      transition: background 0.2s ease;
+
+      &:hover {
+        background: rgba($blue-primary, 0.03);
+      }
+
+      &:last-child {
+        border-bottom: none;
+      }
+
+      &.is-done .contact__quest-label {
+        text-decoration: line-through;
+        text-decoration-color: $success;
+        color: $text-tertiary;
+      }
+    }
+
+    &-label {
+      font-weight: 600;
+      text-align: left;
+    }
+
+    &-hint {
+      font-size: 0.7rem;
+      color: $text-tertiary;
+      text-align: right;
+      letter-spacing: 0.05em;
+    }
+
+    &-footer {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      padding: $spacing-sm $spacing-md;
+      border-top: $line-thin dashed $line-3;
+      margin-top: $spacing-xs;
+      font-family: $font-mono;
+    }
+
+    &-prompt {
+      color: $blue-primary;
+      font-weight: 700;
+    }
+
+    &-cursor {
+      width: 8px;
+      height: 16px;
+      background: $blue-primary;
+      animation: cursorBlink 1s steps(2) infinite;
+      @include glow-box($blue-primary, $glow-sm);
     }
   }
 
@@ -85,39 +166,29 @@
     display: inline-flex;
     align-items: center;
     gap: 0.85rem;
-    padding: 1.1rem 2rem;
-    background: rgba($color-void, 0.7);
-    color: $neon-cyan;
+    padding: 1.05rem 2rem;
+    background: $bg-surface;
+    color: $blue-primary;
     @include pixel-corner($pixel-2);
-    font-family: $font-display;
+    font-family: $font-heading;
     font-size: 1.05rem;
     font-weight: 700;
     letter-spacing: 0.04em;
     margin-bottom: $spacing-lg;
-    transition: all $duration-normal $ease-cyber;
+    transition: all $duration-normal $ease-geek;
     position: relative;
     overflow: hidden;
-    border: 2px solid rgba($neon-cyan, 0.5);
-    @include neon-glow($neon-cyan, $neon-blur-sm);
+    border: $line-thick solid $line-1;
 
     &::before {
-      content: '';
-      position: absolute;
-      inset: 0;
-      background: linear-gradient(135deg, rgba($neon-cyan, 0.18) 0%, rgba($neon-magenta, 0.18) 100%);
-      opacity: 0;
-      transition: opacity $duration-normal $ease-cyber;
-    }
-
-    &::after {
       content: '';
       position: absolute;
       top: 0;
       left: -100%;
       width: 100%;
       height: 100%;
-      background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
-      transition: left 0.8s $ease-cyber;
+      background: linear-gradient(90deg, transparent, rgba($blue-primary, 0.12), transparent);
+      transition: left 0.8s $ease-geek;
     }
 
     span, svg {
@@ -132,80 +203,159 @@
 
     &:hover {
       transform: translateY(-3px) scale(1.02);
-      @include neon-box-glow($neon-cyan, $neon-blur-lg);
-      border-color: $neon-cyan;
-      color: $color-text;
+      background: $blue-primary;
+      border-color: $blue-primary;
+      color: $text-invert;
+      @include glow-box($blue-primary, $glow-lg);
 
-      &::before { opacity: 1; }
-      &::after { left: 100%; }
+      &::before { left: 100%; }
+    }
+  }
+
+  &__social-label {
+    display: flex;
+    align-items: center;
+    gap: $spacing-sm;
+    width: 100%;
+    max-width: 640px;
+    margin-bottom: $spacing-sm;
+
+    &-text {
+      font-family: $font-mono;
+      font-size: 0.7rem;
+      letter-spacing: 0.2em;
+      color: $text-tertiary;
+      text-transform: uppercase;
+      white-space: nowrap;
+    }
+
+    &-line {
+      flex: 1;
+      height: 1px;
+      background: repeating-linear-gradient(
+        90deg,
+        $line-3 0 6px,
+        transparent 6px 12px
+      );
     }
   }
 
   &__social {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
     gap: $spacing-sm;
     margin-bottom: $spacing-xl;
+    width: 100%;
+    max-width: 640px;
+
+    @include respond-to($bp-md) {
+      grid-template-columns: repeat(4, 1fr);
+    }
 
     &-link {
-      display: inline-flex;
+      display: grid;
+      grid-template-columns: auto 1fr;
+      grid-template-rows: auto auto;
+      grid-template-areas:
+        "code icon"
+        "code name";
+      column-gap: $spacing-xs;
       align-items: center;
-      justify-content: center;
-      width: 3.2rem;
-      height: 3.2rem;
-      @include pixel-corner($pixel-2);
-      background: rgba($color-panel, 0.7);
-      border: 1px solid rgba($neon-magenta, 0.3);
-      backdrop-filter: blur(6px);
-      transition: all $duration-normal $ease-cyber;
-      color: $color-text-dim;
+      justify-items: start;
+      padding: $spacing-sm $spacing-sm;
+      @include pixel-corner($pixel);
+      background: $bg-surface;
+      border: $line-thin solid $line-2;
+      transition: all $duration-normal $ease-geek;
+      color: $text-secondary;
       position: relative;
       overflow: hidden;
-
-      svg {
-        width: 1.15rem;
-        height: 1.15rem;
-        position: relative;
-        z-index: 1;
-      }
+      text-align: left;
 
       &::before {
         content: '';
         position: absolute;
-        inset: 0;
-        background: linear-gradient(135deg, rgba($neon-cyan, 0.3) 0%, rgba($neon-magenta, 0.3) 100%);
+        inset: 2px;
+        border: $line-thin dashed $blue-primary;
         opacity: 0;
-        transition: opacity $duration-normal $ease-cyber;
+        transition: opacity 0.25s ease;
+        @include pixel-corner($pixel);
+        pointer-events: none;
+      }
+
+      svg {
+        grid-area: icon;
+        width: 1.15rem;
+        height: 1.15rem;
+        position: relative;
+        z-index: 1;
+        justify-self: end;
       }
 
       &:hover {
-        transform: translateY(-4px) rotate(-2deg);
-        color: $color-void;
-        border-color: $neon-magenta;
-        @include neon-box-glow($neon-magenta, $neon-blur-md);
+        transform: translateY(-3px);
+        color: $blue-primary;
+        border-color: $blue-primary;
+        @include glow-box($blue-primary, $glow-md);
 
-        &::before { opacity: 1; }
+        &::before { opacity: 0.7; }
       }
 
-      // 占位社交链接（未填写 href）：不可点击、弱化显示
       &--disabled {
         pointer-events: none;
-        opacity: 0.4;
+        opacity: 0.45;
         filter: saturate(0.5);
       }
+    }
+
+    &-code {
+      grid-area: code;
+      font-family: $font-pixel;
+      font-size: 0.55rem;
+      letter-spacing: 0.1em;
+      color: $blue-primary;
+      opacity: 0.9;
+      writing-mode: vertical-rl;
+      transform: rotate(180deg);
+      padding: 2px 0;
+      border-right: $line-thin dashed $line-4;
+      margin-right: 2px;
+    }
+
+    &-name {
+      grid-area: name;
+      font-family: $font-mono;
+      font-size: 0.72rem;
+      font-weight: 600;
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+      position: relative;
+      z-index: 1;
+      justify-self: end;
     }
   }
 
   &__footer {
     width: 100%;
     padding-top: $spacing-lg;
-    border-top: 1px solid;
-    border-image: linear-gradient(90deg, transparent, $neon-violet, $neon-cyan, $neon-magenta, transparent) 1;
+    border-top: $line-thin dashed $line-3;
     display: flex;
     flex-direction: column;
     gap: $spacing-sm;
     align-items: center;
+    position: relative;
+
+    &::before {
+      content: '';
+      position: absolute;
+      top: -1px;
+      left: 50%;
+      transform: translateX(-50%) rotate(45deg);
+      width: 10px;
+      height: 10px;
+      background: $bg-page;
+      border: $line-thin solid $blue-primary;
+    }
 
     @include respond-to($bp-md) {
       flex-direction: row;
@@ -214,13 +364,13 @@
 
     &-left {
       font-family: $font-mono;
-      font-size: 0.85rem;
-      color: $color-text-dim;
+      font-size: 0.8rem;
+      color: $text-tertiary;
 
       .heart {
-        color: $neon-red;
-        @include neon-glow($neon-red, $neon-blur-sm);
+        color: $blue-primary;
         display: inline-block;
+        @include glow-text($blue-primary, $glow-sm);
         animation: heartbeat 1.4s ease-in-out infinite;
       }
     }
@@ -228,21 +378,30 @@
     &-right {
       font-family: $font-pixel;
       font-size: 0.6rem;
-      color: $neon-cyan;
+      color: $blue-primary;
       letter-spacing: 0.15em;
-      opacity: 0.7;
+      opacity: 0.75;
     }
   }
 }
 
-@keyframes labelBlink {
+@keyframes cursorBlink {
   0%, 49% { opacity: 1; }
   50%, 100% { opacity: 0; }
 }
 
 @keyframes heartbeat {
   0%, 100% { transform: scale(1); }
-  25% { transform: scale(1.2); }
+  25% { transform: scale(1.25); }
   50% { transform: scale(1); }
   75% { transform: scale(1.15); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .contact__quest-cursor {
+    animation: none;
+  }
+  .contact__footer-left .heart {
+    animation: none;
+  }
 }

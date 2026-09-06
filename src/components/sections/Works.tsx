@@ -19,26 +19,26 @@ const works: Work[] = [
   {
     num: '01',
     badge: 'FEATURED',
-    title: 'NEON.GRID // 赛博设计系统',
-    desc: '为新一代生活方式品牌打造的完整赛博朋克设计系统：包含 120+ 霓虹组件、暗色/故障双主题、动效规范，以及从 Figma → React 的自动化 Tokens 流水线。',
+    title: 'BLUEPRINT // 极客设计系统',
+    desc: '面向开发者社区的完整设计系统：包含 120+ 组件、浅/深双主题、像素边框与虚线规范，以及从 Figma Tokens → React SCSS 变量的自动化同步流水线。',
     tags: ['DESIGN_SYSTEM', 'REACT', 'FIGMA'],
     previewClass: 'works__visual-preview--1',
-    hud: 'SIG_A8 • v3.2.1',
+    hud: 'BUILD_OK • v2.1.0',
   },
   {
     num: '02',
     badge: 'WEB_APP',
-    title: 'DATA.NET // 3D 数据可视化',
-    desc: '面向环保机构的实时数据控制台：基于 Three.js 构建的三维地球 + D3 数据图层叠加，支持千万级数据点的流畅渲染，霓虹色彩映射环境指标。',
+    title: 'NODE.MAP // 3D 节点可视化',
+    desc: '面向网络运维的实时拓扑控制台：基于 Three.js 构建的三维节点图 + D3 力导向图层叠加，支持万级节点流畅渲染，蓝色渐变映射健康度指标。',
     tags: ['THREE.JS', 'D3.JS', 'WEBGL'],
     previewClass: 'works__visual-preview--2',
-    hud: '60FPS • OK',
+    hud: '60FPS • NODES:10K',
   },
   {
     num: '03',
     badge: 'CREATIVE',
-    title: 'GLITCH.ART // 艺术家作品集',
-    desc: '为当代数字艺术家打造的沉浸式作品站：使用 GSAP ScrollTrigger 实现段落级 Pin 切换，配合 WebGL 自定义故障着色器与实时声音可视化。',
+    title: 'PIXEL.QUEST // 独立作品集',
+    desc: '为独立游戏开发者打造的沉浸式作品站：GSAP ScrollTrigger 实现章节 Pin 切换，配合 WebGL 自定义像素着色器与 8-bit 音频波形可视化。',
     tags: ['GSAP', 'SHADERS', 'NEXT.JS'],
     previewClass: 'works__visual-preview--3',
     hud: 'AOTW_★★★★★',
@@ -149,10 +149,10 @@ const Works = () => {
           <h2>
             精选项目
             <br />
-            <span className="hl glitch-text" data-text="//NEON.ARCHIVE">//NEON.ARCHIVE</span>
+            <span className="hl">//BLUEPRINT.ARCHIVE</span>
           </h2>
           <p>
-            // 从 0x00 至 0xFF — 每一次上线都是一次赛博跃迁
+            // 从 0x00 至 0xFF — 每一次上线都是一次构建通过
             <br />
             Log: 48 commits · 29 releases · 1 critical bug fixed in 13 minutes.
           </p>

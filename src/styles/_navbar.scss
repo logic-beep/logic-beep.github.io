@@ -1,0 +1,210 @@
+@use 'variables' as *;
+@use 'mixins' as *;
+
+.navbar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: $z-nav;
+  background: rgba($bg-surface, 0.92);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border-bottom: $line-thick solid $line-1;
+
+  &::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 3px;
+    background: repeating-linear-gradient(
+      90deg,
+      $blue-primary 0,
+      $blue-primary 8px,
+      $line-1 8px,
+      $line-1 16px
+    );
+    opacity: 0.9;
+  }
+
+  &-inner {
+    @include max-width;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    height: 72px;
+    gap: $spacing-md;
+    padding-top: 0;
+    padding-bottom: 0;
+  }
+
+  &__logo {
+    display: flex;
+    align-items: center;
+    gap: 2px;
+    font-family: $font-pixel;
+    font-size: 0.75rem;
+    letter-spacing: 0.05em;
+    flex-shrink: 0;
+    padding: 0.5rem 0.75rem;
+    background: $bg-panel;
+    border: $line-thick solid $line-1;
+    @include pixel-corner($pixel);
+    position: relative;
+
+    &::after {
+      content: '';
+      position: absolute;
+      bottom: -5px;
+      right: -5px;
+      width: 6px;
+      height: 6px;
+      background: $blue-primary;
+      border: $line-thick solid $line-1;
+      transform: rotate(45deg);
+    }
+
+    &-bracket {
+      color: $blue-primary;
+      font-weight: 900;
+      @include glow-text($blue-primary, $glow-sm);
+    }
+
+    &-text {
+      color: $text-primary;
+      font-weight: 700;
+    }
+
+    &-version {
+      margin-left: 0.5rem;
+      color: $text-muted;
+      font-family: $font-mono;
+      font-size: 0.65rem;
+      letter-spacing: 0.1em;
+    }
+  }
+
+  &__tabs {
+    display: none;
+    align-items: flex-end;
+    height: 100%;
+    gap: 0;
+
+    @include respond-to($bp-md) {
+      display: flex;
+    }
+
+    @include respond-to($bp-lg) {
+      gap: $spacing-xs;
+    }
+  }
+
+  &__tab {
+    @include tab-nav();
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    height: 100%;
+    border-radius: 0;
+
+    @include respond-to($bp-lg) {
+      padding: 0 1.5rem;
+    }
+
+    &-code {
+      font-size: 0.65rem;
+      color: $text-muted;
+      font-weight: 400;
+    }
+
+    &:hover {
+      .navbar__tab-code {
+        color: $blue-primary;
+      }
+    }
+
+    &.is-active {
+      .navbar__tab-code {
+        color: $blue-primary-dark;
+        @include glow-text($blue-primary, $glow-sm);
+      }
+    }
+  }
+
+  &__checkboxes {
+    display: none;
+    align-items: center;
+    gap: 0.5rem;
+    position: relative;
+
+    @include respond-to($bp-md) {
+      display: flex;
+    }
+  }
+
+  &-cb {
+    margin: 0;
+  }
+
+  &__circuit-dot {
+    width: 6px;
+    height: 6px;
+    background: $blue-primary;
+    border: $line-thick solid $line-1;
+    transform: rotate(45deg);
+    margin-left: 0.25rem;
+    @include glow-box($blue-primary, $glow-sm);
+  }
+
+  &__circuit-line {
+    width: 40px;
+    height: $line-thick;
+    background: linear-gradient(90deg, $line-1 0%, $line-1 50%, transparent 50%);
+    background-size: 6px 100%;
+    position: relative;
+
+    &::after {
+      content: '';
+      position: absolute;
+      right: 0;
+      top: -3px;
+      width: 0;
+      height: 0;
+      border-left: 5px solid $line-1;
+      border-top: 4px solid transparent;
+      border-bottom: 4px solid transparent;
+    }
+  }
+
+  &__bottom-line {
+    height: 3px;
+    background: $bg-muted;
+    border-top: $line-thin solid $line-muted;
+    position: relative;
+    overflow: hidden;
+
+    &-fill {
+      position: absolute;
+      top: 0;
+      left: 0;
+      height: 100%;
+      width: 35%;
+      background: repeating-linear-gradient(
+        90deg,
+        $blue-primary 0,
+        $blue-primary 10px,
+        $blue-primary-light 10px,
+        $blue-primary-light 20px
+      );
+      animation: navbarScan 4s $ease-geek infinite;
+      @include glow-box($blue-primary, $glow-sm);
+    }
+  }
+}
+
+@keyframes navbarScan {
+  0% { transform: translateX(-100%); }
+  100% { transform: translateX(300%); }
+}

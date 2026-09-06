@@ -130,8 +130,6 @@ const Skills = () => {
   const container = useRef<HTMLElement>(null)
 
   useGSAP(() => {
-    // 减少动态效果：不播放入场/视差，仅把技能条一次性设置到最终
-    // 比例（fill 默认无 transform 会显示为满格，必须显式设置）
     if (REDUCED_MOTION) {
       gsap.utils.toArray<HTMLElement>('.skills__card-level-fill').forEach((el, i) => {
         gsap.set(el, { scaleX: skills[i].level / 100 })
@@ -200,28 +198,33 @@ const Skills = () => {
       <div className="section-bg skills-bg" />
       <div className="section-content skills-content">
         <div className="skills-content-heading">
-          <span className="section-label section-label--skills">Skills // TOOLBOX_v3</span>
+          <span className="section-label section-label--skills">Skills // TOOLBOX_2.1</span>
           <h2>
-            <span className="hl glitch-text" data-text="SKILL.MATRIX">SKILL.MATRIX</span>
+            <span className="hl">SKILL_MATRIX</span>
             <br />技术矩阵
           </h2>
           <p className="subtitle">
-            // 经过 5+ 年实战磨砺 · 每一项技能都在真实项目中迭代升级
+            // 经过 5+ 年实战磨砺 · 每一项技能都在真实项目中验证
             <br />
-            From 0x00 to 0xFF — 持续学习，永不停止。
+            Level 0x00 → 0xFF — 持续升级，点亮新技能。
           </p>
         </div>
 
         <div className="skills__grid">
           {skills.map((skill, i) => (
             <div key={i} className="skills__card">
+              <div className="skills__card-corner-tl" aria-hidden="true" />
+              <div className="skills__card-corner-br" aria-hidden="true" />
               <div className="skills__card-icon">{skill.icon}</div>
               <h4 className="skills__card-title">{skill.title}</h4>
               <p className="skills__card-desc">{skill.desc}</p>
               <div className="skills__card-level">
                 <div className="skills__card-level-label">
                   <span>{skill.levelLabel}</span>
-                  <span>{skill.level}%</span>
+                  <span className="skills__card-level-num">
+                    <span className="geek-checkbox geek-checkbox--mini is-checked" aria-hidden="true" />
+                    {skill.level}%
+                  </span>
                 </div>
                 <div className="skills__card-level-bar">
                   <div className="skills__card-level-fill" style={{ width: '100%', transformOrigin: 'left' }} />

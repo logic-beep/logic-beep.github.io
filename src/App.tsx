@@ -3,6 +3,7 @@ import gsap from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
 import { useGSAP } from '@gsap/react'
 import { REDUCED_MOTION } from './utils/motion'
+import NavBar from './components/navigation/NavBar'
 import Hero from './components/sections/Hero'
 import About from './components/sections/About'
 import Skills from './components/sections/Skills'
@@ -65,6 +66,7 @@ function App() {
 
   return (
     <div ref={container} className="app">
+      <NavBar />
       <Decorations />
       <main className="main-content">
         <Hero />

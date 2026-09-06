@@ -11,138 +11,116 @@
   z-index: $z-decor;
   overflow: hidden;
 
-  // Cyber neon glow blobs
-  &__neon {
-    position: absolute;
-    border-radius: 50%;
-    filter: blur(80px);
-    opacity: 0.35;
-    will-change: transform;
-
-    &--1 {
-      top: -15%;
-      right: -10%;
-      width: 55vw;
-      max-width: 900px;
-      aspect-ratio: 1;
-      background: radial-gradient(circle, $neon-magenta 0%, transparent 70%);
-    }
-
-    &--2 {
-      top: 25%;
-      left: -15%;
-      width: 45vw;
-      max-width: 700px;
-      aspect-ratio: 3 / 4;
-      background: radial-gradient(circle, $neon-cyan 0%, transparent 70%);
-    }
-
-    &--3 {
-      bottom: -10%;
-      right: -5%;
-      width: 50vw;
-      max-width: 800px;
-      aspect-ratio: 1;
-      background: radial-gradient(circle, $neon-violet 0%, transparent 70%);
-    }
-
-    &--4 {
-      top: 60%;
-      left: 30%;
-      width: 25vw;
-      max-width: 400px;
-      aspect-ratio: 1;
-      opacity: 0.2;
-      filter: blur(100px);
-      background: radial-gradient(circle, $neon-lime 0%, transparent 70%);
-    }
-  }
-
-  // Matrix-style pixel rain (canvas)
-  &__rain {
+  // Circuit SVG overlay
+  &__circuit-svg {
     position: absolute;
     top: 0;
     left: 0;
     width: 100%;
     height: 100%;
-    opacity: 0.15;
+    opacity: 0.5;
+    will-change: transform;
+
+    @include respond-to($bp-md) {
+      opacity: 0.7;
+    }
   }
 
-  // Pixel block particles
-  &__pixel {
+  // Circuit connection nodes
+  &__nodes {
     position: absolute;
-    width: $pixel-3;
-    height: $pixel-3;
-    opacity: 0;
-    will-change: transform, opacity;
-
-    &--1 { top: 12%; left: 10%; background: $neon-cyan; box-shadow: 0 0 8px $neon-cyan; }
-    &--2 { top: 35%; right: 15%; background: $neon-magenta; box-shadow: 0 0 8px $neon-magenta; width: $pixel-2; height: $pixel-2; }
-    &--3 { bottom: 30%; left: 18%; background: $neon-lime; box-shadow: 0 0 8px $neon-lime; }
-    &--4 { top: 65%; right: 10%; background: $neon-yellow; box-shadow: 0 0 8px $neon-yellow; width: $pixel; height: $pixel; }
-    &--5 { top: 20%; left: 45%; background: $neon-violet; box-shadow: 0 0 8px $neon-violet; width: $pixel; height: $pixel; }
-    &--6 { top: 80%; left: 40%; background: $neon-orange; box-shadow: 0 0 8px $neon-orange; width: $pixel-2; height: $pixel-2; }
-    &--7 { top: 50%; left: 60%; background: $neon-cyan; box-shadow: 0 0 8px $neon-cyan; }
-    &--8 { bottom: 15%; right: 30%; background: $neon-pink; box-shadow: 0 0 8px $neon-pink; width: $pixel; height: $pixel; }
+    inset: 0;
   }
 
-  // Corner HUD decorations
+  &__node {
+    position: absolute;
+    width: 10px;
+    height: 10px;
+    background: $blue-primary;
+    border: $line-thick solid $line-1;
+    transform: rotate(45deg);
+    will-change: transform, opacity;
+    @include glow-box($blue-primary, $glow-sm);
+
+    &--1 { top: 14%; left: 18%; width: 8px; height: 8px; }
+    &--2 { top: 22%; right: 22%; width: 12px; height: 12px; }
+    &--3 { top: 38%; left: 10%; width: 6px; height: 6px; }
+    &--4 { top: 46%; right: 14%; width: 10px; height: 10px; }
+    &--5 { top: 58%; left: 28%; width: 8px; height: 8px; }
+    &--6 { top: 66%; right: 32%; width: 10px; height: 10px; }
+    &--7 { top: 76%; left: 14%; width: 12px; height: 12px; }
+    &--8 { top: 82%; right: 18%; width: 8px; height: 8px; }
+    &--9 { top: 30%; left: 46%; width: 6px; height: 6px; }
+    &--10 { top: 50%; right: 46%; width: 8px; height: 8px; }
+  }
+
+  // Connection lines pattern overlay
+  &__connections {
+    @include absolute-fill;
+    opacity: 0.12;
+    background-image:
+      linear-gradient(rgba($blue-primary, 0.5) 1px, transparent 1px),
+      linear-gradient(90deg, rgba($blue-primary, 0.5) 1px, transparent 1px),
+      radial-gradient(circle, rgba($line-1, 0.4) 1px, transparent 1px);
+    background-size: 120px 120px, 120px 120px, 30px 30px;
+    mask-image: radial-gradient(ellipse at center, black 0%, transparent 75%);
+    -webkit-mask-image: radial-gradient(ellipse at center, black 0%, transparent 75%);
+  }
+
+  // HUD Corner info
   &__hud {
     position: absolute;
     font-family: $font-mono;
     font-size: 0.6rem;
     letter-spacing: 0.15em;
-    color: rgba($neon-cyan, 0.4);
+    color: rgba($line-2, 0.5);
     text-transform: uppercase;
+    line-height: 1.8;
+    padding: 0.6rem 0.8rem;
+    background: rgba($bg-surface, 0.55);
+    backdrop-filter: blur(6px);
+    -webkit-backdrop-filter: blur(6px);
+    border: $line-thin solid rgba($line-2, 0.2);
+    @include pixel-corner($pixel);
 
     &--tl {
-      top: 2rem;
-      left: 2rem;
+      top: 5.5rem;
+      left: 1.2rem;
       text-align: left;
-      line-height: 1.8;
+      border-left: $line-thick solid $blue-primary;
     }
 
     &--tr {
-      top: 2rem;
-      right: 2rem;
+      top: 5.5rem;
+      right: 1.2rem;
       text-align: right;
-      line-height: 1.8;
+      border-right: $line-thick solid $blue-primary;
     }
 
     &--bl {
       bottom: 2rem;
-      left: 2rem;
+      left: 1.2rem;
       text-align: left;
-      line-height: 1.8;
+      border-left: $line-thick dashed $line-3;
     }
 
     &--br {
       bottom: 2rem;
-      right: 2rem;
+      right: 1.2rem;
       text-align: right;
-      line-height: 1.8;
+      border-right: $line-thick dashed $line-3;
     }
 
     span {
       display: block;
-      color: rgba($neon-magenta, 0.6);
+      color: rgba($blue-primary-dark, 0.75);
+      font-weight: 700;
 
       &::before {
-        content: '▍ ';
-        color: $neon-cyan;
+        content: '◇ ';
+        color: $blue-primary;
+        font-size: 0.55rem;
       }
     }
-  }
-
-  // Circuit lines overlay
-  &__circuits {
-    @include absolute-fill;
-    opacity: 0.08;
-    background:
-      radial-gradient(2px 2px at 20% 30%, $neon-cyan, transparent),
-      radial-gradient(2px 2px at 60% 70%, $neon-magenta, transparent),
-      radial-gradient(2px 2px at 80% 20%, $neon-violet, transparent),
-      radial-gradient(2px 2px at 40% 80%, $neon-cyan, transparent);
-    background-size: 80px 80px;
   }
 }

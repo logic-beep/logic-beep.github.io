@@ -4,16 +4,14 @@
 .works {
   &-bg {
     background:
-      radial-gradient(ellipse 70% 50% at 80% 20%, rgba($neon-orange, 0.2) 0%, transparent 70%),
-      radial-gradient(ellipse 60% 60% at 10% 90%, rgba($neon-violet, 0.25) 0%, transparent 70%);
+      radial-gradient(ellipse 70% 50% at 10% 20%, rgba($blue-primary, 0.06) 0%, transparent 70%),
+      radial-gradient(ellipse 60% 60% at 90% 80%, rgba($blue-primary, 0.08) 0%, transparent 70%),
+      linear-gradient(180deg, $bg-surface 0%, $bg-panel 50%, $bg-page 100%);
 
     &::before {
       content: '';
       @include absolute-fill;
-      background-image:
-        linear-gradient(rgba($neon-orange, 0.04) 1px, transparent 1px),
-        linear-gradient(90deg, rgba($neon-orange, 0.04) 1px, transparent 1px);
-      background-size: 30px 30px;
+      @include tech-grid(rgba($line-1, 0.04), 30px);
       mask-image: linear-gradient(to bottom, transparent 0%, black 30%, black 70%, transparent 100%);
       -webkit-mask-image: linear-gradient(to bottom, transparent 0%, black 30%, black 70%, transparent 100%);
     }
@@ -28,16 +26,19 @@
         margin-bottom: $spacing-sm;
 
         .hl {
-          @include gradient-neon($gradient-neon-by);
-          @include neon-glow($neon-yellow, $neon-blur-sm);
+          @include gradient-blue-text;
+          @include glow-text($blue-primary, $glow-sm);
+          display: inline-block;
         }
       }
 
       p {
         max-width: 540px;
         font-family: $font-mono;
-        color: $color-text-dim;
+        color: $text-tertiary;
         font-size: 0.95rem;
+        padding-left: $spacing-sm;
+        border-left: $line-thick dashed $blue-primary;
       }
     }
   }
@@ -57,7 +58,9 @@
     grid-template-columns: 1fr;
     gap: $spacing-md;
     padding: $spacing-md;
-    @include cyber-panel($neon-orange);
+    background: $bg-surface;
+    border: $line-thick solid $line-1;
+    @include pixel-corner($pixel-2);
     position: relative;
     overflow: hidden;
 
@@ -83,15 +86,20 @@
       left: -100%;
       width: 60%;
       height: 100%;
-      background: linear-gradient(90deg, transparent, rgba($neon-cyan, 0.08), transparent);
+      background: linear-gradient(90deg, transparent, rgba($blue-primary, 0.06), transparent);
       transform: skewX(-20deg);
-      transition: left 1.2s $ease-cyber;
+      transition: left 1.2s $ease-geek;
       pointer-events: none;
       z-index: 0;
     }
 
     &:hover::before {
       left: 120%;
+    }
+
+    &:hover {
+      border-color: $blue-primary;
+      @include glow-box($blue-primary, $glow-md);
     }
 
     &-num {
@@ -102,9 +110,11 @@
       font-size: clamp(2.5rem, 7vw, 5rem);
       line-height: 1;
       z-index: 0;
-      @include gradient-neon($gradient-neon-rv);
-      opacity: 0.18;
+      opacity: 0.08;
       letter-spacing: -0.02em;
+      @include gradient-blue-text;
+      user-select: none;
+      pointer-events: none;
     }
   }
 
@@ -114,8 +124,18 @@
     @include pixel-corner($pixel-2);
     overflow: hidden;
     z-index: 1;
-    border: 1px solid rgba($neon-orange, 0.35);
-    @include neon-box-glow($neon-orange, $neon-blur-sm);
+    border: $line-thick solid $line-2;
+    background: $bg-panel;
+
+    &::before {
+      content: '';
+      position: absolute;
+      inset: 4px;
+      border: $line-thin dashed rgba($blue-primary, 0.4);
+      @include pixel-corner($pixel);
+      pointer-events: none;
+      z-index: 3;
+    }
 
     &-preview {
       @include absolute-fill;
@@ -123,34 +143,34 @@
 
       &--1 {
         background:
-          linear-gradient(135deg, rgba($neon-red, 0.3) 0%, rgba($neon-violet, 0.3) 50%, rgba($neon-cyan, 0.3) 100%),
-          repeating-linear-gradient(45deg, rgba(255,255,255,0.05) 0 10px, transparent 10px 20px);
+          linear-gradient(135deg, rgba($blue-primary, 0.4) 0%, rgba($line-2, 0.3) 50%, rgba($blue-primary-dark, 0.4) 100%),
+          repeating-linear-gradient(45deg, rgba(255,255,255,0.1) 0 10px, transparent 10px 20px);
       }
 
       &--2 {
         background:
-          linear-gradient(135deg, rgba($neon-lime, 0.3) 0%, rgba($neon-cyan, 0.3) 50%, rgba($neon-yellow, 0.25) 100%),
-          repeating-linear-gradient(-45deg, rgba(0,0,0,0.2) 0 8px, transparent 8px 16px);
+          linear-gradient(135deg, rgba($success, 0.35) 0%, rgba($blue-primary, 0.35) 50%, rgba($warning, 0.3) 100%),
+          repeating-linear-gradient(-45deg, rgba(0,0,0,0.15) 0 8px, transparent 8px 16px);
       }
 
       &--3 {
         background:
-          linear-gradient(135deg, rgba($neon-violet, 0.35) 0%, rgba($neon-blue, 0.3) 50%, rgba($neon-cyan, 0.3) 100%),
-          radial-gradient(circle at 50% 50%, rgba(255,255,255,0.15) 0%, transparent 60%);
+          linear-gradient(135deg, rgba($blue-primary-dark, 0.5) 0%, rgba($info, 0.35) 50%, rgba($blue-primary-light, 0.4) 100%),
+          radial-gradient(circle at 50% 50%, rgba(255,255,255,0.2) 0%, transparent 60%);
       }
 
       &::before {
         content: '';
         @include absolute-fill;
         background:
-          linear-gradient(135deg, rgba(255, 255, 255, 0.2) 0%, transparent 30%),
-          radial-gradient(circle at 85% 15%, rgba(0, 0, 0, 0.25) 0%, transparent 50%);
+          linear-gradient(135deg, rgba(255, 255, 255, 0.25) 0%, transparent 30%),
+          radial-gradient(circle at 85% 15%, rgba(0, 0, 0, 0.2) 0%, transparent 50%);
       }
 
       &::after {
         content: '';
         @include absolute-fill;
-        @include cyber-grid(rgba(255, 255, 255, 0.06), 20px);
+        @include tech-grid(rgba(255, 255, 255, 0.08), 20px);
         mix-blend-mode: overlay;
       }
     }
@@ -160,18 +180,27 @@
       top: $spacing-sm;
       left: $spacing-sm;
       padding: 0.35rem 0.8rem;
-      background: rgba($color-void, 0.75);
-      backdrop-filter: blur(6px);
+      background: $bg-surface;
+      border: $line-thick solid $line-1;
       @include pixel-corner($pixel);
       font-family: $font-mono;
       font-size: 0.65rem;
       font-weight: 700;
       letter-spacing: 0.2em;
       text-transform: uppercase;
-      color: $neon-orange;
-      border: 1px solid rgba($neon-orange, 0.5);
-      z-index: 2;
-      @include neon-glow($neon-orange, $neon-blur-sm);
+      color: $blue-primary-dark;
+      z-index: 4;
+
+      &::after {
+        content: '';
+        position: absolute;
+        top: -4px;
+        right: -4px;
+        width: 6px;
+        height: 6px;
+        background: $blue-primary;
+        transform: rotate(45deg);
+      }
     }
 
     &-hud {
@@ -180,11 +209,11 @@
       right: $spacing-sm;
       font-family: $font-mono;
       font-size: 0.6rem;
-      color: $color-text-dim;
-      background: rgba($color-void, 0.6);
+      color: $text-secondary;
+      background: rgba($bg-surface, 0.9);
       padding: 0.25rem 0.5rem;
-      border: 1px solid rgba($neon-cyan, 0.25);
-      z-index: 2;
+      border: $line-thin dashed $line-3;
+      z-index: 4;
       letter-spacing: 0.15em;
       text-transform: uppercase;
     }
@@ -202,21 +231,29 @@
 
       span {
         padding: 0.3rem 0.7rem;
-        background: rgba($neon-cyan, 0.08);
-        color: $neon-cyan;
+        background: $bg-panel;
+        color: $blue-primary-dark;
         @include pixel-corner($pixel);
         font-family: $font-mono;
         font-size: 0.7rem;
-        font-weight: 500;
+        font-weight: 600;
         letter-spacing: 0.08em;
-        border: 1px solid rgba($neon-cyan, 0.25);
+        border: $line-thin solid $line-muted;
         text-transform: uppercase;
+        transition: all $duration-fast $ease-geek;
+
+        &:hover {
+          background: $blue-primary-tint;
+          border-color: $blue-primary;
+          color: $blue-primary;
+          @include glow-box($blue-primary, $glow-sm);
+        }
       }
     }
 
     h3 {
       margin-bottom: $spacing-sm;
-      color: $color-text;
+      color: $text-primary;
       line-height: 1.2;
     }
 
@@ -224,6 +261,7 @@
       margin-bottom: $spacing-md;
       font-size: 0.98rem;
       line-height: 1.8;
+      color: $text-secondary;
     }
 
     &-link {
@@ -232,30 +270,32 @@
       gap: 0.6rem;
       font-family: $font-mono;
       font-weight: 700;
-      color: $neon-yellow;
+      color: $blue-primary-dark;
       font-size: 0.85rem;
       padding: 0.6rem 1rem;
       letter-spacing: 0.1em;
       text-transform: uppercase;
-      border: 1px solid rgba($neon-yellow, 0.4);
+      border: $line-thick solid $line-1;
       @include pixel-corner($pixel);
-      background: rgba($neon-yellow, 0.05);
-      transition: all $duration-fast $ease-cyber;
+      background: $bg-surface;
+      transition: all $duration-fast $ease-geek;
+      position: relative;
 
       svg {
         width: 1rem;
         height: 1rem;
-        transition: transform $duration-fast $ease-cyber;
+        transition: transform $duration-fast $ease-geek;
       }
 
       &:hover {
-        @include neon-glow($neon-yellow, $neon-blur-sm);
-        @include neon-box-glow($neon-yellow, $neon-blur-md);
+        color: $text-invert;
+        background: $blue-primary;
+        border-color: $blue-primary;
+        @include glow-box($blue-primary, $glow-md);
         gap: 0.9rem;
-        background: rgba($neon-yellow, 0.12);
       }
 
-      // 占位链接（未填写 url）：不可点击、弱化显示
+      // Disabled placeholder
       &--disabled {
         pointer-events: none;
         opacity: 0.45;
