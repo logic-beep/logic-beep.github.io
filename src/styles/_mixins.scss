@@ -1,0 +1,181 @@
+@use 'variables' as *;
+
+@mixin respond-to($bp) {
+  @media (min-width: $bp) {
+    @content;
+  }
+}
+
+@mixin max-width {
+  width: 100%;
+  max-width: 1440px;
+  margin: 0 auto;
+  padding: 0 $spacing-md;
+
+  @include respond-to($bp-md) {
+    padding: 0 $spacing-lg;
+  }
+
+  @include respond-to($bp-lg) {
+    padding: 0 $spacing-xl;
+  }
+}
+
+@mixin flex-center {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+@mixin absolute-fill {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+}
+
+// Cyberpunk Neon Glow
+@mixin neon-glow($color, $size: $neon-blur-md) {
+  text-shadow:
+    0 0 $neon-blur-sm rgba($color, 0.8),
+    0 0 $size rgba($color, 0.6),
+    0 0 ($size * 2) rgba($color, 0.3);
+}
+
+@mixin neon-box-glow($color, $size: $neon-blur-md) {
+  box-shadow:
+    inset 0 0 ($pixel * 2) rgba($color, 0.2),
+    0 0 $neon-blur-sm rgba($color, 0.5),
+    0 0 $size rgba($color, 0.3),
+    0 0 ($size * 2) rgba($color, 0.15);
+}
+
+// Pixel Border (chunky stepped corners)
+@mixin pixel-border($color: $neon-cyan, $thickness: 2px) {
+  border: $thickness solid $color;
+  clip-path: polygon(
+    0 $pixel, $pixel $pixel, $pixel 0,
+    calc(100% - $pixel) 0, calc(100% - $pixel) $pixel, 100% $pixel,
+    100% calc(100% - $pixel), calc(100% - $pixel) calc(100% - $pixel), calc(100% - $pixel) 100%,
+    $pixel 100%, $pixel calc(100% - $pixel), 0 calc(100% - $pixel)
+  );
+}
+
+@mixin pixel-corner($size: $pixel-2) {
+  clip-path: polygon(
+    0 $size, $size $size, $size 0,
+    calc(100% - $size) 0, calc(100% - $size) $size, 100% $size,
+    100% calc(100% - $size), calc(100% - $size) calc(100% - $size), calc(100% - $size) 100%,
+    $size 100%, $size calc(100% - $size), 0 calc(100% - $size)
+  );
+}
+
+// Cyber Grid Background
+@mixin cyber-grid($line-color: rgba($neon-cyan, 0.08), $size: 50px) {
+  background-image:
+    linear-gradient($line-color 1px, transparent 1px),
+    linear-gradient(90deg, $line-color 1px, transparent 1px);
+  background-size: $size $size;
+}
+
+// Scanline Effect
+@mixin scanlines {
+  background-image: repeating-linear-gradient(
+    to bottom,
+    transparent 0,
+    transparent 2px,
+    rgba(0, 0, 0, 0.15) 2px,
+    rgba(0, 0, 0, 0.15) 4px
+  );
+  pointer-events: none;
+}
+
+// Gradient Text (Cyber)
+@mixin gradient-neon($gradient) {
+  background: $gradient;
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  color: transparent;
+}
+
+// Glitch Text Mixin (uses data-text)
+@mixin glitch-text($c1: $neon-cyan, $c2: $neon-magenta) {
+  position: relative;
+
+  &::before,
+  &::after {
+    content: attr(data-text);
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+  }
+
+  &::before {
+    color: $c1;
+    transform: translate(2px, 0);
+    clip-path: polygon(0 0, 100% 0, 100% 45%, 0 45%);
+    mix-blend-mode: screen;
+    opacity: 0.9;
+  }
+
+  &::after {
+    color: $c2;
+    transform: translate(-2px, 0);
+    clip-path: polygon(0 55%, 100% 55%, 100% 100%, 0 100%);
+    mix-blend-mode: screen;
+    opacity: 0.9;
+  }
+}
+
+// Cyber Panel
+@mixin cyber-panel($accent: $neon-cyan) {
+  background: rgba($color-panel, 0.7);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  border: 1px solid rgba($accent, 0.3);
+  @include pixel-corner($pixel-2);
+  position: relative;
+
+  &::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(135deg, rgba($accent, 0.05) 0%, transparent 50%);
+    pointer-events: none;
+    @include pixel-corner($pixel-2);
+  }
+}
+
+// Corner Brackets
+@mixin corner-brackets($color: $neon-cyan, $size: 16px) {
+  position: relative;
+
+  &::before,
+  &::after {
+    content: '';
+    position: absolute;
+    width: $size;
+    height: $size;
+    border: 2px solid $color;
+    pointer-events: none;
+  }
+
+  &::before {
+    top: -4px;
+    left: -4px;
+    border-right: none;
+    border-bottom: none;
+  }
+
+  &::after {
+    bottom: -4px;
+    right: -4px;
+    border-left: none;
+    border-top: none;
+  }
+}

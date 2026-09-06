@@ -1,0 +1,248 @@
+@use 'variables' as *;
+@use 'mixins' as *;
+
+.contact {
+  &-bg {
+    background:
+      radial-gradient(ellipse 80% 60% at 50% 0%, rgba($neon-red, 0.18) 0%, transparent 60%),
+      radial-gradient(ellipse 70% 50% at 50% 100%, rgba($neon-violet, 0.25) 0%, transparent 70%),
+      linear-gradient(180deg, transparent 0%, rgba($color-void, 0.6) 100%);
+
+    &::after {
+      content: '';
+      @include absolute-fill;
+      @include cyber-grid(rgba($neon-red, 0.04), 50px);
+      mask-image: radial-gradient(circle at center, black 0%, transparent 80%);
+      -webkit-mask-image: radial-gradient(circle at center, black 0%, transparent 80%);
+    }
+  }
+
+  &-content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    padding-top: $spacing-xl;
+    padding-bottom: $spacing-xl;
+  }
+
+  &__label {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.4rem 1.1rem;
+    background: rgba($neon-red, 0.08);
+    color: $neon-red;
+    @include pixel-corner($pixel);
+    font-family: $font-mono;
+    font-size: 0.7rem;
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    margin-bottom: $spacing-md;
+    border: 1px solid rgba($neon-red, 0.35);
+    font-weight: 700;
+    @include neon-glow($neon-red, $neon-blur-sm);
+
+    &::before {
+      content: '▮';
+      color: $neon-magenta;
+      animation: labelBlink 1.2s steps(2) infinite;
+    }
+  }
+
+  &__title {
+    font-family: $font-display;
+    font-size: clamp(2.5rem, 7vw, 5rem);
+    font-weight: 900;
+    line-height: 1.05;
+    margin-bottom: $spacing-md;
+    max-width: 900px;
+    letter-spacing: -0.01em;
+
+    &--accent {
+      font-style: normal;
+      font-weight: 900;
+      @include gradient-neon($gradient-neon-rv);
+      @include neon-glow($neon-magenta, $neon-blur-md);
+    }
+  }
+
+  &__desc {
+    max-width: 560px;
+    font-size: 1rem;
+    line-height: 1.85;
+    margin-bottom: $spacing-lg;
+    color: $color-text-dim;
+    font-family: $font-mono;
+    padding: 0 $spacing-sm;
+
+    .hl {
+      color: $neon-cyan;
+    }
+  }
+
+  &__email {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.85rem;
+    padding: 1.1rem 2rem;
+    background: rgba($color-void, 0.7);
+    color: $neon-cyan;
+    @include pixel-corner($pixel-2);
+    font-family: $font-display;
+    font-size: 1.05rem;
+    font-weight: 700;
+    letter-spacing: 0.04em;
+    margin-bottom: $spacing-lg;
+    transition: all $duration-normal $ease-cyber;
+    position: relative;
+    overflow: hidden;
+    border: 2px solid rgba($neon-cyan, 0.5);
+    @include neon-glow($neon-cyan, $neon-blur-sm);
+
+    &::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(135deg, rgba($neon-cyan, 0.18) 0%, rgba($neon-magenta, 0.18) 100%);
+      opacity: 0;
+      transition: opacity $duration-normal $ease-cyber;
+    }
+
+    &::after {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: -100%;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+      transition: left 0.8s $ease-cyber;
+    }
+
+    span, svg {
+      position: relative;
+      z-index: 1;
+    }
+
+    svg {
+      width: 1.2rem;
+      height: 1.2rem;
+    }
+
+    &:hover {
+      transform: translateY(-3px) scale(1.02);
+      @include neon-box-glow($neon-cyan, $neon-blur-lg);
+      border-color: $neon-cyan;
+      color: $color-text;
+
+      &::before { opacity: 1; }
+      &::after { left: 100%; }
+    }
+  }
+
+  &__social {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: $spacing-sm;
+    margin-bottom: $spacing-xl;
+
+    &-link {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 3.2rem;
+      height: 3.2rem;
+      @include pixel-corner($pixel-2);
+      background: rgba($color-panel, 0.7);
+      border: 1px solid rgba($neon-magenta, 0.3);
+      backdrop-filter: blur(6px);
+      transition: all $duration-normal $ease-cyber;
+      color: $color-text-dim;
+      position: relative;
+      overflow: hidden;
+
+      svg {
+        width: 1.15rem;
+        height: 1.15rem;
+        position: relative;
+        z-index: 1;
+      }
+
+      &::before {
+        content: '';
+        position: absolute;
+        inset: 0;
+        background: linear-gradient(135deg, rgba($neon-cyan, 0.3) 0%, rgba($neon-magenta, 0.3) 100%);
+        opacity: 0;
+        transition: opacity $duration-normal $ease-cyber;
+      }
+
+      &:hover {
+        transform: translateY(-4px) rotate(-2deg);
+        color: $color-void;
+        border-color: $neon-magenta;
+        @include neon-box-glow($neon-magenta, $neon-blur-md);
+
+        &::before { opacity: 1; }
+      }
+
+      // 占位社交链接（未填写 href）：不可点击、弱化显示
+      &--disabled {
+        pointer-events: none;
+        opacity: 0.4;
+        filter: saturate(0.5);
+      }
+    }
+  }
+
+  &__footer {
+    width: 100%;
+    padding-top: $spacing-lg;
+    border-top: 1px solid;
+    border-image: linear-gradient(90deg, transparent, $neon-violet, $neon-cyan, $neon-magenta, transparent) 1;
+    display: flex;
+    flex-direction: column;
+    gap: $spacing-sm;
+    align-items: center;
+
+    @include respond-to($bp-md) {
+      flex-direction: row;
+      justify-content: space-between;
+    }
+
+    &-left {
+      font-family: $font-mono;
+      font-size: 0.85rem;
+      color: $color-text-dim;
+
+      .heart {
+        color: $neon-red;
+        @include neon-glow($neon-red, $neon-blur-sm);
+        display: inline-block;
+        animation: heartbeat 1.4s ease-in-out infinite;
+      }
+    }
+
+    &-right {
+      font-family: $font-pixel;
+      font-size: 0.6rem;
+      color: $neon-cyan;
+      letter-spacing: 0.15em;
+      opacity: 0.7;
+    }
+  }
+}
+
+@keyframes labelBlink {
+  0%, 49% { opacity: 1; }
+  50%, 100% { opacity: 0; }
+}
+
+@keyframes heartbeat {
+  0%, 100% { transform: scale(1); }
+  25% { transform: scale(1.2); }
+  50% { transform: scale(1); }
+  75% { transform: scale(1.15); }
+}

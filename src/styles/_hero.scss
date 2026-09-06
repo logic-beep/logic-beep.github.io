@@ -1,0 +1,258 @@
+@use 'variables' as *;
+@use 'mixins' as *;
+
+.hero {
+  min-height: 100vh;
+  padding: $spacing-lg 0;
+  position: relative;
+
+  &-bg {
+    background:
+      radial-gradient(ellipse 80% 50% at 50% 0%, rgba($neon-violet, 0.35) 0%, transparent 70%),
+      radial-gradient(ellipse 60% 40% at 20% 80%, rgba($neon-cyan, 0.25) 0%, transparent 70%),
+      radial-gradient(ellipse 60% 40% at 80% 80%, rgba($neon-magenta, 0.25) 0%, transparent 70%),
+      $color-void;
+
+    &::after {
+      content: '';
+      @include absolute-fill;
+      @include cyber-grid(rgba($neon-cyan, 0.05), 40px);
+      background-position: center;
+      mask-image: linear-gradient(to bottom, black 0%, transparent 100%);
+      -webkit-mask-image: linear-gradient(to bottom, black 0%, transparent 100%);
+    }
+  }
+
+  &-content {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    min-height: 90vh;
+    position: relative;
+  }
+
+  &__greeting {
+    font-family: $font-mono;
+    font-size: clamp(0.85rem, 1.2vw, 1rem);
+    color: $neon-cyan;
+    margin-bottom: $spacing-md;
+    letter-spacing: 0.2em;
+    opacity: 0;
+    transform: translateY(30px);
+    @include neon-glow($neon-cyan, $neon-blur-sm);
+
+    &::before {
+      content: '> ';
+      color: $neon-magenta;
+    }
+  }
+
+  &__title {
+    font-family: $font-display;
+    font-size: clamp(3rem, 11vw, 9rem);
+    font-weight: 900;
+    line-height: 0.95;
+    letter-spacing: -0.02em;
+    margin-bottom: $spacing-md;
+    position: relative;
+
+    &-line {
+      display: block;
+      overflow: hidden;
+    }
+
+    &-inner {
+      display: block;
+      transform: translateY(100%);
+      color: $color-text;
+      position: relative;
+
+      &.glitch-text {
+        display: block;
+      }
+    }
+
+    &--accent {
+      @include gradient-neon($gradient-neon-cm);
+      font-style: normal;
+      font-weight: 900;
+      text-shadow: 0 0 40px rgba($neon-cyan, 0.35);
+    }
+  }
+
+  &__subtitle {
+    font-family: $font-mono;
+    font-size: clamp(0.95rem, 1.4vw, 1.2rem);
+    color: $color-text-dim;
+    max-width: 640px;
+    margin-bottom: $spacing-lg;
+    line-height: 1.8;
+    opacity: 0;
+    transform: translateY(30px);
+    padding-left: $spacing-md;
+    border-left: 2px solid $neon-magenta;
+
+    .hl {
+      color: $neon-cyan;
+      @include neon-glow($neon-cyan, $neon-blur-sm);
+    }
+  }
+
+  &__meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: $spacing-md $spacing-xl;
+    opacity: 0;
+    transform: translateY(30px);
+
+    &-item {
+      display: flex;
+      flex-direction: column;
+      gap: 0.35rem;
+      padding: $spacing-xs 0;
+      border-top: 1px solid rgba($neon-cyan, 0.25);
+
+      span:first-child {
+        font-family: $font-mono;
+        font-size: 0.65rem;
+        text-transform: uppercase;
+        letter-spacing: 0.25em;
+        color: $color-text-faint;
+      }
+
+      span:last-child {
+        font-family: $font-display;
+        font-size: 1.1rem;
+        color: $color-text;
+        letter-spacing: 0.03em;
+        @include neon-glow($neon-magenta, $neon-blur-sm);
+      }
+    }
+  }
+
+  &__scroll {
+    position: absolute;
+    bottom: 3rem;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.85rem;
+    color: $neon-cyan;
+    font-family: $font-mono;
+    font-size: 0.6rem;
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    opacity: 0;
+
+    &-line {
+      position: relative;
+      width: 2px;
+      height: 4rem;
+      background: rgba($neon-cyan, 0.15);
+      overflow: hidden;
+
+      &::after {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 50%;
+        background: linear-gradient(to bottom, $neon-cyan, transparent);
+        animation: heroScrollGlow 2s ease-in-out infinite;
+        @include neon-glow($neon-cyan, $neon-blur-sm);
+      }
+    }
+
+    &-arrow {
+      width: 0;
+      height: 0;
+      border-left: 5px solid transparent;
+      border-right: 5px solid transparent;
+      border-top: 7px solid $neon-cyan;
+      animation: heroScrollArrow 2s ease-in-out infinite;
+    }
+  }
+
+  &__terminal {
+    position: absolute;
+    right: 2rem;
+    top: 25%;
+    width: 280px;
+    @include cyber-panel($neon-cyan);
+    @include neon-box-glow($neon-cyan, $neon-blur-md);
+    padding: $spacing-sm;
+    font-family: $font-mono;
+    font-size: 0.75rem;
+    line-height: 1.8;
+    color: $neon-lime;
+    opacity: 0;
+    transform: translateX(40px);
+    display: none;
+
+    @include respond-to($bp-lg) {
+      display: block;
+    }
+
+    &-bar {
+      display: flex;
+      gap: 0.35rem;
+      padding-bottom: 0.5rem;
+      margin-bottom: 0.5rem;
+      border-bottom: 1px solid rgba($neon-cyan, 0.2);
+
+      span {
+        width: 10px;
+        height: 10px;
+        border-radius: 2px;
+
+        &:nth-child(1) { background: $neon-red; }
+        &:nth-child(2) { background: $neon-yellow; }
+        &:nth-child(3) { background: $neon-lime; }
+      }
+    }
+
+    .prompt { color: $neon-magenta; }
+    .cmd { color: $color-text; }
+    .ok { color: $neon-lime; }
+    .dim { color: $color-text-faint; }
+  }
+}
+
+@keyframes heroScrollGlow {
+  0% { transform: translateY(-100%); opacity: 0; }
+  50% { transform: translateY(50%); opacity: 1; }
+  100% { transform: translateY(200%); opacity: 0; }
+}
+
+@keyframes heroScrollArrow {
+  0%, 100% { transform: translateY(0); opacity: 0.6; }
+  50% { transform: translateY(6px); opacity: 1; }
+}
+
+// Reduced Motion — Hero 开场动画被跳过时，
+// 强制展示 CSS 中处于「初始隐藏态」的内容
+// （与 Hero.tsx 的 REDUCED_MOTION 分支配对使用）
+@media (prefers-reduced-motion: reduce) {
+  .hero__greeting,
+  .hero__subtitle,
+  .hero__meta {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  .hero__title-inner {
+    transform: translateY(0);
+  }
+
+  .hero__scroll {
+    opacity: 1;
+  }
+
+  .hero__terminal {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}

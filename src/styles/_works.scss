@@ -1,0 +1,266 @@
+@use 'variables' as *;
+@use 'mixins' as *;
+
+.works {
+  &-bg {
+    background:
+      radial-gradient(ellipse 70% 50% at 80% 20%, rgba($neon-orange, 0.2) 0%, transparent 70%),
+      radial-gradient(ellipse 60% 60% at 10% 90%, rgba($neon-violet, 0.25) 0%, transparent 70%);
+
+    &::before {
+      content: '';
+      @include absolute-fill;
+      background-image:
+        linear-gradient(rgba($neon-orange, 0.04) 1px, transparent 1px),
+        linear-gradient(90deg, rgba($neon-orange, 0.04) 1px, transparent 1px);
+      background-size: 30px 30px;
+      mask-image: linear-gradient(to bottom, transparent 0%, black 30%, black 70%, transparent 100%);
+      -webkit-mask-image: linear-gradient(to bottom, transparent 0%, black 30%, black 70%, transparent 100%);
+    }
+  }
+
+  &-content {
+    &-heading {
+      margin-bottom: $spacing-xl;
+
+      h2 {
+        margin-top: $spacing-sm;
+        margin-bottom: $spacing-sm;
+
+        .hl {
+          @include gradient-neon($gradient-neon-by);
+          @include neon-glow($neon-yellow, $neon-blur-sm);
+        }
+      }
+
+      p {
+        max-width: 540px;
+        font-family: $font-mono;
+        color: $color-text-dim;
+        font-size: 0.95rem;
+      }
+    }
+  }
+
+  &__list {
+    display: flex;
+    flex-direction: column;
+    gap: $spacing-lg;
+
+    @include respond-to($bp-md) {
+      gap: $spacing-xl;
+    }
+  }
+
+  &__item {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: $spacing-md;
+    padding: $spacing-md;
+    @include cyber-panel($neon-orange);
+    position: relative;
+    overflow: hidden;
+
+    @include respond-to($bp-lg) {
+      grid-template-columns: 1fr 1fr;
+      gap: $spacing-lg;
+      padding: $spacing-lg;
+      align-items: center;
+    }
+
+    &:nth-child(even) {
+      @include respond-to($bp-lg) {
+        .works__visual {
+          order: 2;
+        }
+      }
+    }
+
+    &::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: -100%;
+      width: 60%;
+      height: 100%;
+      background: linear-gradient(90deg, transparent, rgba($neon-cyan, 0.08), transparent);
+      transform: skewX(-20deg);
+      transition: left 1.2s $ease-cyber;
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    &:hover::before {
+      left: 120%;
+    }
+
+    &-num {
+      position: absolute;
+      top: 0.5rem;
+      right: $spacing-md;
+      font-family: $font-pixel;
+      font-size: clamp(2.5rem, 7vw, 5rem);
+      line-height: 1;
+      z-index: 0;
+      @include gradient-neon($gradient-neon-rv);
+      opacity: 0.18;
+      letter-spacing: -0.02em;
+    }
+  }
+
+  &__visual {
+    position: relative;
+    aspect-ratio: 16 / 10;
+    @include pixel-corner($pixel-2);
+    overflow: hidden;
+    z-index: 1;
+    border: 1px solid rgba($neon-orange, 0.35);
+    @include neon-box-glow($neon-orange, $neon-blur-sm);
+
+    &-preview {
+      @include absolute-fill;
+      @include pixel-corner($pixel-2);
+
+      &--1 {
+        background:
+          linear-gradient(135deg, rgba($neon-red, 0.3) 0%, rgba($neon-violet, 0.3) 50%, rgba($neon-cyan, 0.3) 100%),
+          repeating-linear-gradient(45deg, rgba(255,255,255,0.05) 0 10px, transparent 10px 20px);
+      }
+
+      &--2 {
+        background:
+          linear-gradient(135deg, rgba($neon-lime, 0.3) 0%, rgba($neon-cyan, 0.3) 50%, rgba($neon-yellow, 0.25) 100%),
+          repeating-linear-gradient(-45deg, rgba(0,0,0,0.2) 0 8px, transparent 8px 16px);
+      }
+
+      &--3 {
+        background:
+          linear-gradient(135deg, rgba($neon-violet, 0.35) 0%, rgba($neon-blue, 0.3) 50%, rgba($neon-cyan, 0.3) 100%),
+          radial-gradient(circle at 50% 50%, rgba(255,255,255,0.15) 0%, transparent 60%);
+      }
+
+      &::before {
+        content: '';
+        @include absolute-fill;
+        background:
+          linear-gradient(135deg, rgba(255, 255, 255, 0.2) 0%, transparent 30%),
+          radial-gradient(circle at 85% 15%, rgba(0, 0, 0, 0.25) 0%, transparent 50%);
+      }
+
+      &::after {
+        content: '';
+        @include absolute-fill;
+        @include cyber-grid(rgba(255, 255, 255, 0.06), 20px);
+        mix-blend-mode: overlay;
+      }
+    }
+
+    &-badge {
+      position: absolute;
+      top: $spacing-sm;
+      left: $spacing-sm;
+      padding: 0.35rem 0.8rem;
+      background: rgba($color-void, 0.75);
+      backdrop-filter: blur(6px);
+      @include pixel-corner($pixel);
+      font-family: $font-mono;
+      font-size: 0.65rem;
+      font-weight: 700;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: $neon-orange;
+      border: 1px solid rgba($neon-orange, 0.5);
+      z-index: 2;
+      @include neon-glow($neon-orange, $neon-blur-sm);
+    }
+
+    &-hud {
+      position: absolute;
+      bottom: $spacing-sm;
+      right: $spacing-sm;
+      font-family: $font-mono;
+      font-size: 0.6rem;
+      color: $color-text-dim;
+      background: rgba($color-void, 0.6);
+      padding: 0.25rem 0.5rem;
+      border: 1px solid rgba($neon-cyan, 0.25);
+      z-index: 2;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+    }
+  }
+
+  &__text {
+    position: relative;
+    z-index: 1;
+
+    &-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+      margin-bottom: $spacing-md;
+
+      span {
+        padding: 0.3rem 0.7rem;
+        background: rgba($neon-cyan, 0.08);
+        color: $neon-cyan;
+        @include pixel-corner($pixel);
+        font-family: $font-mono;
+        font-size: 0.7rem;
+        font-weight: 500;
+        letter-spacing: 0.08em;
+        border: 1px solid rgba($neon-cyan, 0.25);
+        text-transform: uppercase;
+      }
+    }
+
+    h3 {
+      margin-bottom: $spacing-sm;
+      color: $color-text;
+      line-height: 1.2;
+    }
+
+    p {
+      margin-bottom: $spacing-md;
+      font-size: 0.98rem;
+      line-height: 1.8;
+    }
+
+    &-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.6rem;
+      font-family: $font-mono;
+      font-weight: 700;
+      color: $neon-yellow;
+      font-size: 0.85rem;
+      padding: 0.6rem 1rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      border: 1px solid rgba($neon-yellow, 0.4);
+      @include pixel-corner($pixel);
+      background: rgba($neon-yellow, 0.05);
+      transition: all $duration-fast $ease-cyber;
+
+      svg {
+        width: 1rem;
+        height: 1rem;
+        transition: transform $duration-fast $ease-cyber;
+      }
+
+      &:hover {
+        @include neon-glow($neon-yellow, $neon-blur-sm);
+        @include neon-box-glow($neon-yellow, $neon-blur-md);
+        gap: 0.9rem;
+        background: rgba($neon-yellow, 0.12);
+      }
+
+      // 占位链接（未填写 url）：不可点击、弱化显示
+      &--disabled {
+        pointer-events: none;
+        opacity: 0.45;
+        filter: saturate(0.5);
+      }
+    }
+  }
+}

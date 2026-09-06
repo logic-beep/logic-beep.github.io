@@ -1,0 +1,82 @@
+// ==========================================
+// CYBERPUNK + PIXEL STYLE - Color Palette
+// Deep dark backgrounds + neon glows + pixel tones
+// ==========================================
+
+// Base - Deep Void
+$color-void: #05010F;
+$color-void-2: #0A0218;
+$color-abyss: #0F0524;
+$color-deep: #15082F;
+$color-panel: #1A0B38;
+$color-panel-2: #22114A;
+$color-grid: #2A1660;
+
+// Text
+$color-text: #E0D6FF;
+$color-text-dim: #8C7AB8;
+$color-text-faint: #5A4A8A;
+
+// Neon Accents
+$neon-cyan: #00F0FF;
+$neon-magenta: #FF2BD6;
+$neon-violet: #8A2BE2;
+$neon-pink: #FF6EC7;
+$neon-lime: #39FF14;
+$neon-yellow: #FFEB3B;
+$neon-orange: #FF6A00;
+$neon-red: #FF0055;
+$neon-blue: #4D5BFF;
+
+// Gradient Presets - Cyber
+$gradient-neon-cm: linear-gradient(135deg, $neon-cyan 0%, $neon-magenta 100%);
+$gradient-neon-vp: linear-gradient(135deg, $neon-violet 0%, $neon-pink 100%);
+$gradient-neon-by: linear-gradient(135deg, $neon-blue 0%, $neon-yellow 100%);
+$gradient-neon-lc: linear-gradient(160deg, $neon-lime 0%, $neon-cyan 100%);
+$gradient-neon-rv: linear-gradient(160deg, $neon-red 0%, $neon-violet 60%, $neon-cyan 100%);
+$gradient-void-deep: linear-gradient(180deg, $color-void 0%, $color-abyss 50%, $color-deep 100%);
+$gradient-panel-glow: linear-gradient(135deg, rgba($neon-cyan, 0.08) 0%, rgba($neon-magenta, 0.08) 100%);
+
+// Typography - Cyber
+$font-display: 'Orbitron', 'Rajdhani', sans-serif;
+$font-mono: 'Space Mono', 'VT323', monospace;
+$font-pixel: 'Press Start 2P', monospace;
+$font-body: 'Rajdhani', sans-serif;
+
+// Spacing
+$spacing-xs: 0.5rem;
+$spacing-sm: 1rem;
+$spacing-md: 2rem;
+$spacing-lg: 4rem;
+$spacing-xl: 6rem;
+$spacing-xxl: 10rem;
+
+// Breakpoints
+$bp-sm: 640px;
+$bp-md: 768px;
+$bp-lg: 1024px;
+$bp-xl: 1280px;
+$bp-xxl: 1536px;
+
+// Transitions - Cyber
+$ease-cyber: cubic-bezier(0.2, 0.8, 0.2, 1);
+$ease-pixel: steps(8);
+$ease-jitter: cubic-bezier(0.68, -0.55, 0.27, 1.55);
+$duration-slow: 1.2s;
+$duration-normal: 0.6s;
+$duration-fast: 0.2s;
+
+// Z-index
+$z-bg: -1;
+$z-content: 1;
+$z-decor: 0;
+$z-nav: 100;
+$z-overlay: 1000;
+
+// Pixel values
+$pixel: 4px;
+$pixel-2: 8px;
+$pixel-3: 12px;
+$neon-blur-sm: 4px;
+$neon-blur-md: 12px;
+$neon-blur-lg: 24px;

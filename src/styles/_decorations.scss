@@ -1,0 +1,148 @@
+@use 'variables' as *;
+@use 'mixins' as *;
+
+.decorations {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: $z-decor;
+  overflow: hidden;
+
+  // Cyber neon glow blobs
+  &__neon {
+    position: absolute;
+    border-radius: 50%;
+    filter: blur(80px);
+    opacity: 0.35;
+    will-change: transform;
+
+    &--1 {
+      top: -15%;
+      right: -10%;
+      width: 55vw;
+      max-width: 900px;
+      aspect-ratio: 1;
+      background: radial-gradient(circle, $neon-magenta 0%, transparent 70%);
+    }
+
+    &--2 {
+      top: 25%;
+      left: -15%;
+      width: 45vw;
+      max-width: 700px;
+      aspect-ratio: 3 / 4;
+      background: radial-gradient(circle, $neon-cyan 0%, transparent 70%);
+    }
+
+    &--3 {
+      bottom: -10%;
+      right: -5%;
+      width: 50vw;
+      max-width: 800px;
+      aspect-ratio: 1;
+      background: radial-gradient(circle, $neon-violet 0%, transparent 70%);
+    }
+
+    &--4 {
+      top: 60%;
+      left: 30%;
+      width: 25vw;
+      max-width: 400px;
+      aspect-ratio: 1;
+      opacity: 0.2;
+      filter: blur(100px);
+      background: radial-gradient(circle, $neon-lime 0%, transparent 70%);
+    }
+  }
+
+  // Matrix-style pixel rain (canvas)
+  &__rain {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    opacity: 0.15;
+  }
+
+  // Pixel block particles
+  &__pixel {
+    position: absolute;
+    width: $pixel-3;
+    height: $pixel-3;
+    opacity: 0;
+    will-change: transform, opacity;
+
+    &--1 { top: 12%; left: 10%; background: $neon-cyan; box-shadow: 0 0 8px $neon-cyan; }
+    &--2 { top: 35%; right: 15%; background: $neon-magenta; box-shadow: 0 0 8px $neon-magenta; width: $pixel-2; height: $pixel-2; }
+    &--3 { bottom: 30%; left: 18%; background: $neon-lime; box-shadow: 0 0 8px $neon-lime; }
+    &--4 { top: 65%; right: 10%; background: $neon-yellow; box-shadow: 0 0 8px $neon-yellow; width: $pixel; height: $pixel; }
+    &--5 { top: 20%; left: 45%; background: $neon-violet; box-shadow: 0 0 8px $neon-violet; width: $pixel; height: $pixel; }
+    &--6 { top: 80%; left: 40%; background: $neon-orange; box-shadow: 0 0 8px $neon-orange; width: $pixel-2; height: $pixel-2; }
+    &--7 { top: 50%; left: 60%; background: $neon-cyan; box-shadow: 0 0 8px $neon-cyan; }
+    &--8 { bottom: 15%; right: 30%; background: $neon-pink; box-shadow: 0 0 8px $neon-pink; width: $pixel; height: $pixel; }
+  }
+
+  // Corner HUD decorations
+  &__hud {
+    position: absolute;
+    font-family: $font-mono;
+    font-size: 0.6rem;
+    letter-spacing: 0.15em;
+    color: rgba($neon-cyan, 0.4);
+    text-transform: uppercase;
+
+    &--tl {
+      top: 2rem;
+      left: 2rem;
+      text-align: left;
+      line-height: 1.8;
+    }
+
+    &--tr {
+      top: 2rem;
+      right: 2rem;
+      text-align: right;
+      line-height: 1.8;
+    }
+
+    &--bl {
+      bottom: 2rem;
+      left: 2rem;
+      text-align: left;
+      line-height: 1.8;
+    }
+
+    &--br {
+      bottom: 2rem;
+      right: 2rem;
+      text-align: right;
+      line-height: 1.8;
+    }
+
+    span {
+      display: block;
+      color: rgba($neon-magenta, 0.6);
+
+      &::before {
+        content: '▍ ';
+        color: $neon-cyan;
+      }
+    }
+  }
+
+  // Circuit lines overlay
+  &__circuits {
+    @include absolute-fill;
+    opacity: 0.08;
+    background:
+      radial-gradient(2px 2px at 20% 30%, $neon-cyan, transparent),
+      radial-gradient(2px 2px at 60% 70%, $neon-magenta, transparent),
+      radial-gradient(2px 2px at 80% 20%, $neon-violet, transparent),
+      radial-gradient(2px 2px at 40% 80%, $neon-cyan, transparent);
+    background-size: 80px 80px;
+  }
+}
