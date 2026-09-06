@@ -7,6 +7,13 @@ export default defineConfig({
     port: 5173,
     open: true
   },
+  css: {
+    preprocessorOptions: {
+      scss: {
+        api: 'modern-compiler',
+      },
+    },
+  },
   build: {
     outDir: 'dist',
     emptyOutDir: true,
