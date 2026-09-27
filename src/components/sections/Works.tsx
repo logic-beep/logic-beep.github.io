@@ -43,6 +43,26 @@ const works: Work[] = [
     previewClass: 'works__visual-preview--3',
     hud: 'AOTW_★★★★★',
   },
+  {
+    num: '04',
+    badge: 'LEARNING',
+    title: 'VUE3.LEARN // Vue3 学习工程',
+    desc: '完整的 Vue3 学习项目，集成 Vue Router、Pinia 状态管理、Axios 数据交互封装。涵盖响应式 API、自定义插件、递归组件、模板语法等 6 大模块实战演示。',
+    tags: ['VUE3', 'PINIA', 'AXIOS'],
+    previewClass: 'works__visual-preview--4',
+    hud: 'MODULES:6 • LOGIN:admin/123456',
+    url: 'https://logic-beep.github.io/my-vue-learn',
+  },
+  {
+    num: '05',
+    badge: 'LEARNING',
+    title: 'REACT.LEARN // React 学习工程',
+    desc: '基于 Vite + React 18 + TypeScript 的完整 React 生态学习工程。涵盖基础 Hooks、自定义 Hooks、组件通信、性能优化、Fiber 内核原理、Redux Toolkit、用户管理系统等 9 大模块。',
+    tags: ['REACT18', 'REDUX_TOOLKIT', 'ROUTER'],
+    previewClass: 'works__visual-preview--5',
+    hud: 'MODULES:9 • TS_STRICT',
+    url: 'https://logic-beep.github.io/my-react-learn',
+  },
 ]
 
 const ArrowIcon = () => (

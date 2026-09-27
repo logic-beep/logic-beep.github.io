@@ -159,6 +159,18 @@
           radial-gradient(circle at 50% 50%, rgba(255,255,255,0.2) 0%, transparent 60%);
       }
 
+      &--4 {
+        background:
+          linear-gradient(135deg, rgba(#42b883, 0.45) 0%, rgba(#35495e, 0.4) 50%, rgba(#42b883, 0.35) 100%),
+          repeating-linear-gradient(90deg, rgba(255,255,255,0.1) 0 6px, transparent 6px 12px);
+      }
+
+      &--5 {
+        background:
+          linear-gradient(135deg, rgba(#61dafb, 0.4) 0%, rgba(#282c34, 0.45) 50%, rgba(#61dafb, 0.35) 100%),
+          repeating-linear-gradient(0deg, rgba(255,255,255,0.08) 0 4px, transparent 4px 8px);
+      }
+
       &::before {
         content: '';
         @include absolute-fill;
