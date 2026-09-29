@@ -151,9 +151,13 @@ const About = () => {
 
         <div className="about__text">
           <div className="about__text-heading">
-            <span className="section-label section-label--about">About // USER_DOSSIER</span>
+            <span className="section-label section-label--about">
+              <span className="section-label__dossier-no">DOSSIER_NO.01</span>
+              <span className="section-label__dossier-tab">USER_DOSSIER</span>
+            </span>
             <h2>
-              在<span className="hl">代码与像素</span>之间，
+              <span className="about__heading-strike" aria-hidden="true" />
+              在代码 / 像素之间，
               <br />
               构建优雅。
             </h2>

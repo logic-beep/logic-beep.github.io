@@ -165,23 +165,36 @@ const Works = () => {
       <div className="section-bg works-bg" />
       <div className="section-content works-content">
         <div className="works-content-heading">
-          <span className="section-label section-label--works">Portfolio // SELECTED_WORKS</span>
+          <span className="section-label section-label--works">
+            <span className="section-label__file-corner" aria-hidden="true" />
+            <span className="section-label__file-name">ARCHIVE.ROOM — SELECTED</span>
+          </span>
           <h2>
             精选项目
             <br />
-            <span className="hl">//BLUEPRINT.ARCHIVE</span>
+            <span className="works__heading-path">
+              <span className="works__heading-path-sep">./</span>
+              blueprint
+              <span className="works__heading-path-sep">/</span>
+              archive
+            </span>
           </h2>
           <p>
-            // 从 0x00 至 0xFF — 每一次上线都是一次构建通过
+            <span className="works__p-bullet" aria-hidden="true" />
+            从 0x00 至 0xFF — 每一次上线都是一次构建通过
             <br />
+            <span className="works__p-bullet" aria-hidden="true" />
             Log: 48 commits · 29 releases · 1 critical bug fixed in 13 minutes.
           </p>
         </div>
 
         <div className="works__list">
           {works.map((work, i) => (
-            <article key={i} className="works__item">
-              <span className="works__item-num">{work.num}</span>
+            <article key={i} className={`works__item ${i === 0 ? 'works__item--featured' : ''}`}>
+              <span className={`works__item-filetag works__item-filetag--${i + 1}`}>
+                <span className="works__item-filetag-icon" aria-hidden="true">▯</span>
+                FILE.{String(i + 1).padStart(3, '0')}
+              </span>
 
               <div className="works__visual">
                 <div className={`works__visual-preview ${work.previewClass}`} />

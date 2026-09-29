@@ -27,6 +27,66 @@
 
   &__label {
     margin-bottom: $spacing-md;
+
+    .section-label.contact__label {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.7rem;
+      padding: 0.4rem 0.9rem;
+      border: none;
+      background: transparent;
+    }
+
+    .section-label.contact__label::before,
+    .section-label.contact__label::after {
+      display: none;
+    }
+
+    .section-label__quest-id {
+      font-family: $font-pixel;
+      font-size: 0.6rem;
+      letter-spacing: 0.12em;
+      color: $blue-primary;
+      background: $line-1;
+      padding: 0.25rem 0.5rem 0.2rem;
+      @include pixel-corner($pixel);
+    }
+
+    .section-label__quest-text {
+      font-family: $font-mono;
+      font-size: 0.72rem;
+      font-weight: 700;
+      letter-spacing: 0.25em;
+      text-transform: uppercase;
+      color: $text-primary;
+      background: $bg-surface;
+      border: $line-thick solid $line-1;
+      padding: 0.4rem 1rem;
+      @include pixel-corner($pixel);
+      position: relative;
+    }
+
+    .section-label__quest-led {
+      width: 8px;
+      height: 8px;
+      background: $success;
+      border: $line-thick solid $line-1;
+      @include pixel-corner(2px);
+      position: relative;
+      animation: questLedPulse 1.8s ease-in-out infinite;
+
+      &::after {
+        content: '';
+        position: absolute;
+        inset: 1px;
+        background: rgba(255, 255, 255, 0.35);
+      }
+    }
+  }
+
+  @keyframes questLedPulse {
+    0%, 100% { opacity: 1; box-shadow: 0 0 0 rgba($success, 0); }
+    50% { opacity: 0.65; box-shadow: 0 0 6px rgba($success, 0.5); }
   }
 
   &__title {
@@ -41,11 +101,47 @@
 
     &--accent {
       font-style: normal;
-      font-weight: 900;
-      @include gradient-blue-text;
-      @include glow-text($blue-primary, $glow-sm);
+      font-weight: 700;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5em;
+      font-family: $font-mono;
       letter-spacing: 0.02em;
+      padding: 0.2em 0.7em;
+      background: $line-1;
+      color: $text-invert;
+      @include pixel-corner($pixel-2);
+      position: relative;
+
+      &::before {
+        content: '';
+        position: absolute;
+        inset: 3px;
+        border: $line-thin dashed rgba($blue-primary, 0.5);
+        @include pixel-corner($pixel);
+        pointer-events: none;
+      }
     }
+  }
+
+  .contact__title--prompt {
+    color: $blue-primary;
+    font-weight: 900;
+    font-family: $font-mono;
+    font-size: 0.85em;
+    @include glow-text($blue-primary, $glow-sm);
+  }
+
+  .contact__title--flag {
+    font-family: $font-mono;
+    font-weight: 700;
+    font-size: 0.42em;
+    letter-spacing: 0.15em;
+    padding: 0.25em 0.6em;
+    background: $blue-primary;
+    color: $text-invert;
+    @include pixel-corner($pixel);
+    align-self: center;
   }
 
   &__quest {
@@ -293,10 +389,10 @@
       }
 
       &:hover {
-        transform: translateY(-3px);
+        transform: translateY(-2px);
         color: $blue-primary;
         border-color: $blue-primary;
-        @include glow-box($blue-primary, $glow-md);
+        background: rgba($blue-primary, 0.06);
 
         &::before { opacity: 0.7; }
       }
@@ -402,6 +498,9 @@
     animation: none;
   }
   .contact__footer-left .heart {
+    animation: none;
+  }
+  .section-label__quest-led {
     animation: none;
   }
 }

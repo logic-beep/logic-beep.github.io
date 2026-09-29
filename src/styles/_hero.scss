@@ -69,8 +69,23 @@
     &-line {
       display: block;
       overflow: hidden;
-      padding: 44px 120px;
-      margin: -44px -120px;
+      padding: 44px 520px 44px 120px;
+      margin: -44px -520px -44px -120px;
+
+      &:first-child {
+        padding-right: 260px;
+        margin-right: -260px;
+      }
+
+      @include respond-to($bp-md) {
+        padding: 44px 720px 44px 160px;
+        margin: -44px -720px -44px -160px;
+
+        &:first-child {
+          padding-right: 360px;
+          margin-right: -360px;
+        }
+      }
     }
 
     &-inner {
@@ -81,21 +96,76 @@
       @include glow-text($blue-primary, $glow-sm);
     }
 
-    &--accent {
-      @include gradient-blue-text;
-      font-style: normal;
-      font-weight: 900;
-      display: inline-block;
+    &--tag {
+      display: inline-flex;
+      align-items: stretch;
+      font-family: $font-mono;
+      font-weight: 700;
+      letter-spacing: 0.04em;
       position: relative;
+      border: $line-thick solid $line-1;
+      @include pixel-corner($pixel-2);
+      background: $bg-surface;
+      overflow: visible;
+      font-size: clamp(0.5rem, 7.6vw, 0.75em);
 
-      &::before {
+      &::after {
         content: '';
         position: absolute;
-        inset: -4px -8px;
-        border: $line-thin dashed rgba($blue-primary, 0.5);
-        @include pixel-corner($pixel);
-        opacity: 0.7;
+        inset: 3px;
+        border: $line-thin dashed rgba($line-2, 0.25);
         pointer-events: none;
+        @include pixel-corner($pixel);
+      }
+
+      &-prefix {
+        padding: 0.3em 0.8em 0.3em 1em;
+        background: $line-1;
+        color: $blue-primary;
+        font-size: 0.35em;
+        display: inline-flex;
+        align-items: center;
+        font-weight: 700;
+        letter-spacing: 0.18em;
+        text-transform: lowercase;
+        position: relative;
+        z-index: 1;
+      }
+
+      &-slash {
+        padding: 0 0.22em;
+        background: $blue-primary;
+        color: $text-invert;
+        font-size: 0.8em;
+        display: inline-flex;
+        align-items: center;
+        font-weight: 900;
+        position: relative;
+        z-index: 1;
+      }
+
+      &-main {
+        padding: 0.3em 2em 0.3em 0.75em;
+        color: $text-primary;
+        font-family: $font-heading;
+        font-weight: 900;
+        letter-spacing: -0.005em;
+        background: $bg-surface;
+        position: relative;
+        z-index: 1;
+        white-space: nowrap;
+
+        &::after {
+          content: '';
+          position: absolute;
+          right: 0.8em;
+          top: 50%;
+          transform: translateY(-50%) rotate(45deg);
+          width: 0.18em;
+          height: 0.18em;
+          background: $blue-primary;
+          @include glow-box($blue-primary, $glow-sm);
+        }
       }
     }
   }
@@ -130,10 +200,30 @@
       @include glow-box($blue-primary, $glow-sm);
     }
 
-    .hl {
-      color: $blue-primary-dark;
+    &--tick {
+      display: inline-block;
+      width: 28px;
+      font-family: $font-mono;
+      font-size: 0.72em;
+      color: $text-muted;
       font-weight: 700;
-      @include glow-text($blue-primary, $glow-sm);
+      letter-spacing: 0.06em;
+      margin-right: 0.3em;
+      position: relative;
+      padding-left: 12px;
+      flex-shrink: 0;
+
+      &::before {
+        content: '';
+        position: absolute;
+        left: 0;
+        top: 50%;
+        transform: translateY(-50%);
+        width: 6px;
+        height: 6px;
+        background: $blue-primary;
+        transform: translateY(-50%) rotate(45deg);
+      }
     }
   }
 
@@ -244,10 +334,9 @@
   }
 
   &__tasklist {
-    position: absolute;
-    right: 1rem;
-    top: 15%;
-    width: 300px;
+    width: 100%;
+    max-width: 480px;
+    margin-top: $spacing-lg;
     @include geek-panel();
     padding: 0;
     font-family: $font-mono;
@@ -255,16 +344,22 @@
     line-height: 1.8;
     color: $text-secondary;
     opacity: 0;
-    transform: translateX(40px);
-    display: none;
+    transform: translateY(30px);
+    display: grid;
+    grid-template-columns: 32px 1fr;
+    align-items: center;
+    gap: $spacing-xs $spacing-sm;
+    position: relative;
     z-index: 2;
 
     @include respond-to($bp-lg) {
-      display: grid;
-      grid-template-columns: 32px 1fr;
-      align-items: center;
-      gap: $spacing-xs $spacing-sm;
-      padding: 0 0 0 0;
+      position: absolute;
+      right: 1rem;
+      top: 15%;
+      width: 300px;
+      margin-top: 0;
+      transform: translateX(40px);
+      max-width: none;
     }
 
     & > *:not(.hero__tasklist-header):not(.hero__tasklist-footer) {
@@ -383,6 +478,6 @@
 
   .hero__tasklist {
     opacity: 1;
-    transform: translateX(0);
+    transform: translateY(0) translateX(0);
   }
 }

@@ -127,14 +127,18 @@ const Contact = () => {
       <div className="section-bg contact-bg" />
       <div className="section-content contact-content">
         <span className="section-label contact__label">
-          NEXT_QUEST // SEND_MESSAGE — 0x04
+          <span className="section-label__quest-id">0x04 ::</span>
+          <span className="section-label__quest-text">NEXT_QUEST_BOARD</span>
+          <span className="section-label__quest-led" aria-hidden="true" />
         </span>
 
         <h2 className="contact__title">
           手头有任务？
           <br />
           <span className="contact__title--accent">
-            //PAIR_PROGRAMMING_MODE
+            <span className="contact__title--prompt">$</span>
+            PAIR_PROGRAMMING_MODE
+            <span className="contact__title--flag">--active</span>
           </span>
         </h2>
 

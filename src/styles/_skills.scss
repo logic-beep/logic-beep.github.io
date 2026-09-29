@@ -20,16 +20,112 @@
       text-align: center;
       margin-bottom: $spacing-xl;
 
+      .section-label--skills {
+        display: inline-flex;
+        align-items: center;
+        gap: $spacing-sm;
+        padding: 0;
+        border: none;
+        background: transparent;
+
+        &::before,
+        &::after {
+          display: none;
+        }
+      }
+
+      .section-label__toolbar {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        padding: 0.35rem 0.65rem;
+        background: $line-1;
+        @include pixel-corner($pixel);
+
+        &::before {
+          content: '';
+          display: inline-block;
+          width: 8px;
+          height: 8px;
+          background: $bg-input;
+          border: $line-thin solid $line-3;
+        }
+
+        &::after {
+          content: '';
+          display: inline-block;
+          width: 8px;
+          height: 8px;
+          background: $blue-primary;
+          border: $line-thin solid $line-1;
+          transform: rotate(45deg);
+        }
+      }
+
+      .section-label__toolbox-id {
+        font-family: $font-mono;
+        font-size: 0.7rem;
+        font-weight: 700;
+        letter-spacing: 0.25em;
+        color: $text-secondary;
+        background: $bg-surface;
+        border: $line-thick solid $line-1;
+        padding: 0.4rem 1rem;
+        @include pixel-corner($pixel);
+        position: relative;
+
+        &::before {
+          content: '';
+          position: absolute;
+          left: -$pixel;
+          top: 50%;
+          transform: translateY(-50%);
+          width: $pixel;
+          height: 80%;
+          background: $line-1;
+          clip-path: polygon(100% 0, 100% 100%, 0 50%);
+        }
+      }
+
       h2 {
         margin-top: $spacing-sm;
         margin-bottom: $spacing-sm;
+      }
 
-        .hl {
-          @include gradient-blue-text;
-          @include glow-text($blue-primary, $glow-sm);
-          display: inline-block;
-          position: relative;
+      .skills__heading-frame {
+        display: inline-block;
+        position: relative;
+        padding: 0.2em 0.6em;
+        margin-bottom: 0.1em;
+
+        &::before,
+        &::after {
+          content: '';
+          position: absolute;
+          width: 14px;
+          height: 14px;
+          border-color: $blue-primary;
+          border-style: solid;
         }
+
+        &::before {
+          top: 0;
+          left: 0;
+          border-width: $line-thick 0 0 $line-thick;
+        }
+
+        &::after {
+          bottom: 0;
+          right: 0;
+          border-width: 0 $line-thick $line-thick 0;
+        }
+      }
+
+      .skills__heading-frame-text {
+        font-family: $font-mono;
+        font-weight: 900;
+        letter-spacing: 0.08em;
+        color: $text-primary;
       }
 
       .subtitle {
@@ -40,9 +136,33 @@
         color: $text-tertiary;
         padding: $spacing-xs $spacing-sm;
         background: $bg-surface;
-        border: $line-thin dashed $line-muted;
+        border: $line-thin solid $line-muted;
         @include pixel-corner($pixel);
         display: inline-block;
+        text-align: left;
+        position: relative;
+      }
+
+      .skills__subtitle-tick {
+        display: inline-block;
+        width: 10px;
+        height: 10px;
+        margin-right: 0.6rem;
+        margin-left: 0.1em;
+        background: $bg-surface;
+        border: $line-thin solid $blue-primary;
+        transform: rotate(45deg);
+        vertical-align: middle;
+        position: relative;
+
+        &::after {
+          content: '';
+          position: absolute;
+          inset: 1px;
+          background: $blue-primary;
+          transform: scale(0.5);
+          opacity: 0.7;
+        }
       }
     }
   }
@@ -53,7 +173,7 @@
     gap: $spacing-md;
 
     @include respond-to($bp-md) {
-      grid-template-columns: repeat(3, 1fr);
+      grid-template-columns: repeat(4, 1fr);
       gap: $spacing-md $spacing-lg;
     }
 
@@ -63,6 +183,31 @@
   }
 
   &__card {
+    &--wide {
+      @include respond-to($bp-md) {
+        grid-column: span 2;
+
+        .skills__card-icon {
+          width: 4.2rem;
+          height: 4.2rem;
+
+          svg {
+            width: 2.2rem;
+            height: 2.2rem;
+          }
+        }
+
+        .skills__card-title {
+          font-size: 1.2rem;
+        }
+
+        .skills__card-desc {
+          font-size: 0.9rem;
+          min-height: auto;
+        }
+      }
+    }
+
     position: relative;
     padding: $spacing-md $spacing-sm;
     background: $bg-surface;
@@ -101,16 +246,16 @@
     }
 
     &:hover {
-      transform: translateY(-6px) scale(1.015);
-      @include glow-box($blue-primary, $glow-md);
+      transform: translateY(-4px);
       border-color: $blue-primary;
+      background: rgba($blue-primary, 0.06);
 
       &::before,
       &::after {
         opacity: 1;
       }
       &::after {
-        border-color: rgba($blue-primary, 0.5);
+        border-color: rgba($blue-primary, 0.6);
       }
     }
 

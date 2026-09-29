@@ -198,21 +198,28 @@ const Skills = () => {
       <div className="section-bg skills-bg" />
       <div className="section-content skills-content">
         <div className="skills-content-heading">
-          <span className="section-label section-label--skills">Skills // TOOLBOX_2.1</span>
+          <span className="section-label section-label--skills">
+            <span className="section-label__toolbar" aria-hidden="true" />
+            <span className="section-label__toolbox-id">TOOLBOX_IDX :: A01</span>
+          </span>
           <h2>
-            <span className="hl">SKILL_MATRIX</span>
+            <span className="skills__heading-frame">
+              <span className="skills__heading-frame-text">SKILL_MATRIX</span>
+            </span>
             <br />技术矩阵
           </h2>
           <p className="subtitle">
-            // 经过 5+ 年实战磨砺 · 每一项技能都在真实项目中验证
+            <span className="skills__subtitle-tick" aria-hidden="true" />
+            经过 5+ 年实战磨砺 · 每一项技能都在真实项目中验证
             <br />
+            <span className="skills__subtitle-tick" aria-hidden="true" />
             Level 0x00 → 0xFF — 持续升级，点亮新技能。
           </p>
         </div>
 
         <div className="skills__grid">
           {skills.map((skill, i) => (
-            <div key={i} className="skills__card">
+            <div key={i} className={`skills__card ${i < 2 ? 'skills__card--wide' : ''}`}>
               <div className="skills__card-corner-tl" aria-hidden="true" />
               <div className="skills__card-corner-br" aria-hidden="true" />
               <div className="skills__card-icon">{skill.icon}</div>

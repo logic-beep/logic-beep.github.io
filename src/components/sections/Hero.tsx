@@ -56,6 +56,7 @@ const Hero = () => {
     }, 1.0)
 
     tl.to('.hero__tasklist', {
+      y: 0,
       x: 0,
       opacity: 1,
       duration: 0.9,
@@ -88,16 +89,18 @@ const Hero = () => {
       },
     })
 
-    gsap.to('.hero__tasklist', {
-      rotation: -3,
-      yPercent: -15,
-      scrollTrigger: {
-        trigger: container.current,
-        start: 'top top',
-        end: 'bottom top',
-        scrub: 1,
-      },
-    })
+    if (window.matchMedia('(min-width: 1024px)').matches) {
+      gsap.to('.hero__tasklist', {
+        rotation: -3,
+        yPercent: -15,
+        scrollTrigger: {
+          trigger: container.current,
+          start: 'top top',
+          end: 'bottom top',
+          scrub: 1,
+        },
+      })
+    }
   }, { scope: container })
 
   return (
@@ -119,16 +122,21 @@ const Hero = () => {
             </span>
             <span className="hero__title-line">
               <span className="hero__title-inner hero__title-inner--2">
-                <span className="hero__title--accent">// CODE_ARTISAN</span>
+                <span className="hero__title--tag">
+                  <span className="hero__title--tag-prefix">usr</span>
+                  <span className="hero__title--tag-slash">/</span>
+                  <span className="hero__title--tag-main">CODE_ARTISAN</span>
+                </span>
               </span>
             </span>
           </h1>
 
           <p className="hero__subtitle">
-            <span className="hl">[TASK_00]</span> Building elegant solutions
-            with <span className="hl">clean code</span> & pixel-precise design.
+            <span className="hero__subtitle--tick">01</span>
+            Building elegant solutions with clean code &amp; pixel-precise design.
             <br />
-            <span className="hl">[LOG_42]</span> Solving puzzles, shipping features, learning every day.
+            <span className="hero__subtitle--tick">02</span>
+            Solving puzzles, shipping features, learning every day.
           </p>
 
           <div className="hero__meta">
